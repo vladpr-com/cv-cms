@@ -19,15 +19,7 @@ async function addColumns(url: string, authToken?: string) {
 }
 
 async function main() {
-  // 1. Migrate owner DB
-  const ownerUrl = process.env.TURSO_DATABASE_URL;
-  const ownerToken = process.env.TURSO_AUTH_TOKEN;
-  if (ownerUrl) {
-    console.log(`\nMigrating owner DB: ${ownerUrl}`);
-    await addColumns(ownerUrl, ownerToken);
-  }
-
-  // 2. Migrate all user DBs
+  // Migrate all user DBs
   const adminUrl = process.env.TURSO_ADMIN_DB_URL;
   const adminToken = process.env.TURSO_ADMIN_DB_TOKEN;
   if (adminUrl) {

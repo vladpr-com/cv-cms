@@ -80,27 +80,13 @@ Three tables (`src/db/schema.ts`):
 
 Just run `npm run dev`. Anonymous users get IndexedDB storage automatically — no database configuration needed.
 
-### Option 2: Local SQLite (single user)
-
-```bash
-# In .env.local:
-LOCAL_DB_PATH="./cv_data.db"
-
-# Push schema
-npm run db:push
-```
-
-### Option 3: Full Multi-Tenant (Turso)
+### Option 2: Full Multi-Tenant (Turso)
 
 ```bash
 # In .env.local, configure all variables from .env.example:
-# - TURSO_DATABASE_URL + TURSO_AUTH_TOKEN (owner DB)
 # - TURSO_ADMIN_DB_URL + TURSO_ADMIN_DB_TOKEN (admin DB)
 # - TURSO_PLATFORM_API_TOKEN + TURSO_ORG_NAME (DB provisioning)
 # - AUTH_SECRET + OAuth provider credentials
-
-# Push schema to owner DB
-npm run db:push
 
 # Push schema to admin DB
 npx dotenv -e .env.local -- npm run db:admin:push
@@ -112,8 +98,6 @@ See [`.env.example`](.env.example) for the full list with section comments. Key 
 
 | Group | Variables | Required For |
 |-------|-----------|-------------|
-| Single-user DB | `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN` | Turso cloud storage |
-| Local fallback | `LOCAL_DB_PATH` | Local SQLite dev mode |
 | Multi-tenant | `TURSO_ADMIN_DB_*`, `TURSO_PLATFORM_API_TOKEN`, `TURSO_ORG_NAME` | Per-user DB provisioning |
 | Auth | `AUTH_SECRET`, `AUTH_GITHUB_*`, `AUTH_GOOGLE_*` | OAuth sign-in |
 

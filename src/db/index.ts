@@ -7,26 +7,6 @@ type DrizzleInstance = ReturnType<typeof drizzle<typeof schema>>;
 // Connection cache for per-user databases
 const connectionCache = new Map<string, DrizzleInstance>();
 
-// For Edge Runtime (Vercel) — owner's default DB
-export const getOwnerDb = (): DrizzleInstance => {
-  const client = createClient({
-    url: process.env.TURSO_DATABASE_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN,
-  });
-  return drizzle(client, { schema });
-};
-
-// For local development (file-based SQLite)
-export const getLocalDb = (): DrizzleInstance => {
-  const client = createClient({
-    url: process.env.LOCAL_DB_PATH || 'file:./cv_data.db',
-  });
-  return drizzle(client, { schema });
-};
-
-// Backward-compatible default export
-export const db = process.env.TURSO_DATABASE_URL ? getOwnerDb() : getLocalDb();
-
 /**
  * Get a Drizzle instance for a specific user's database.
  * Looks up credentials in admin DB's userDatabases table, caches connections.

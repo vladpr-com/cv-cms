@@ -84,7 +84,7 @@ Three tables in `src/db/schema.ts`:
 - `src/lib/data-layer/` — DataLayer interface + 3 implementations
 - `src/auth/index.ts` — Auth.js config (providers, adapter, callbacks)
 - `src/auth/admin-schema.ts` — Admin DB Drizzle schema
-- `src/db/index.ts` — DB connections (`getOwnerDb()`, `getUserDb(userId)`)
+- `src/db/index.ts` — DB connections (`getUserDb(userId)`, `createDbFromCredentials()`)
 - `src/db/turso-platform.ts` — Turso Platform API client (DB provisioning, token creation)
 - `src/db/migrate-user-db.ts` — Runs DDL against new user DBs (jobs, highlights, profile tables)
 - `src/contexts/data-context.tsx` — DataProvider + `useDataLayer()` hook
@@ -128,11 +128,6 @@ Expected n8n workflow pattern: Webhook POST → Validate Input → Prepare Promp
 ## Environment Variables
 
 ```bash
-# Owner/default data DB
-TURSO_DATABASE_URL="libsql://your-db.turso.io"
-TURSO_AUTH_TOKEN="your-token"
-LOCAL_DB_PATH="./cv_data.db"                    # Local dev fallback
-
 # Admin DB (auth + user metadata)
 TURSO_ADMIN_DB_URL="libsql://your-admin-db.turso.io"
 TURSO_ADMIN_DB_TOKEN="your-admin-token"
@@ -156,7 +151,6 @@ Note: The n8n webhook URL is stored in the user's browser (localStorage key: `n8
 - `npm run db:generate` works for generating migration SQL files
 - `npm run db:push` does NOT work with the current drizzle-kit version + Turso driver
 - To apply schema changes to production, run the SQL directly against Turso using `@libsql/client`:
-  - Owner DB: use `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN`
   - Existing user DBs: query `user_databases` table in admin DB for URLs/tokens, run SQL against each
   - New user DBs get the schema automatically via `src/db/migrate-user-db.ts`
 - `migrate-user-db.ts` also runs ALTER TABLE statements (with try/catch) for columns added after initial schema, so existing user DBs get updated on next provisioning/migration call

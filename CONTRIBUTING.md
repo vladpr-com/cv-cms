@@ -82,17 +82,12 @@ npm run dev
 
 Just run `npm run dev` — anonymous users get IndexedDB storage automatically.
 
-**Option 2: Local SQLite (recommended for development)**
+**Option 2: Full Multi-Tenant (Turso)**
 ```bash
-# In .env.local
-LOCAL_DB_PATH="./cv_data.db"
-```
-
-**Option 3: Turso Cloud**
-```bash
-# Get credentials from https://turso.tech
-TURSO_DATABASE_URL="libsql://your-db.turso.io"
-TURSO_AUTH_TOKEN="your-token"
+# In .env.local, configure all variables from .env.example:
+# - TURSO_ADMIN_DB_* (admin DB)
+# - TURSO_PLATFORM_API_TOKEN + TURSO_ORG_NAME (DB provisioning)
+# - AUTH_SECRET + OAuth provider credentials
 ```
 
 ### Database Commands

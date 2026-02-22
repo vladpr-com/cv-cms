@@ -1,9 +1,8 @@
 'use server';
 
-import { db } from '@/db';
 import { getUserDb } from '@/db';
 import { jobs, highlights, profile } from '@/db/schema';
-import { eq, desc, sql, and, asc } from 'drizzle-orm';
+import { eq, sql, asc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { auth } from '@/auth';
@@ -40,24 +39,17 @@ export type {
 
 /**
  * Get the appropriate DataLayer for the current user.
- * Authenticated users get their own Turso DB; unauthenticated get the owner DB.
+ * Requires authentication — anonymous users use ClientDataLayer directly.
  */
 async function getDataLayer(): Promise<ServerDataLayer> {
   const session = await auth();
 
-  if (session?.user?.id) {
-    try {
-      const userDb = await getUserDb(session.user.id);
-      return new ServerDataLayer(userDb);
-    } catch {
-      // If user DB not found/ready, fall back to owner DB
-      // This handles the case during provisioning
-      return new ServerDataLayer(db);
-    }
+  if (!session?.user?.id) {
+    throw new Error('Authentication required');
   }
 
-  // Unauthenticated — use owner DB (for backward compat)
-  return new ServerDataLayer(db);
+  const userDb = await getUserDb(session.user.id);
+  return new ServerDataLayer(userDb);
 }
 
 // ============ PROFILE ACTIONS ============
@@ -302,16 +294,11 @@ export async function getAllHighlightsWithJobs(): Promise<HighlightWithJob[]> {
 export async function bulkDeleteHighlights(ids: string[]) {
   if (ids.length === 0) return { deleted: 0 };
 
-  // bulkDelete still uses raw db for the IN clause
   const session = await auth();
-  let currentDb = db;
-  if (session?.user?.id) {
-    try {
-      currentDb = await getUserDb(session.user.id);
-    } catch {
-      // fall back to owner db
-    }
+  if (!session?.user?.id) {
+    throw new Error('Authentication required');
   }
+  const currentDb = await getUserDb(session.user.id);
 
   const highlightsToDelete = await currentDb
     .select({ id: highlights.id, jobId: highlights.jobId })
@@ -433,14 +420,10 @@ async function uuidFromSlug(slug: string) {
 export async function exportDatabase(): Promise<BackupData> {
   // Export uses slug-based IDs for portability
   const session = await auth();
-  let currentDb = db;
-  if (session?.user?.id) {
-    try {
-      currentDb = await getUserDb(session.user.id);
-    } catch {
-      // fall back to owner db
-    }
+  if (!session?.user?.id) {
+    throw new Error('Authentication required');
   }
+  const currentDb = await getUserDb(session.user.id);
 
   const allJobs = await currentDb
     .select()
@@ -562,14 +545,10 @@ export async function importDatabase(backupData: unknown): Promise<ImportResult>
     const validated = backupDataSchema.parse(backupData);
 
     const session = await auth();
-    let currentDb = db;
-    if (session?.user?.id) {
-      try {
-        currentDb = await getUserDb(session.user.id);
-      } catch {
-        // fall back to owner db
-      }
+    if (!session?.user?.id) {
+      throw new Error('Authentication required');
     }
+    const currentDb = await getUserDb(session.user.id);
 
     const jobSlugToId = new Map<string, string>();
 
