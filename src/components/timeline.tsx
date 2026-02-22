@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { HighlightCard } from '@/components/cards/highlight-card';
 import { CreateHighlightDialog } from '@/components/dialogs/highlight-dialog';
+import { ImportButton } from '@/components/import-button';
 import { Building2, Calendar, Briefcase, ChevronDown, ChevronUp } from 'lucide-react';
 import type { JobWithHighlights } from '@/lib/data-types';
 import Link from 'next/link';
@@ -166,12 +167,15 @@ export function Timeline({ jobs }: TimelineProps) {
         <p className="text-muted-foreground mt-2 mb-6 max-w-sm mx-auto">
           Add your first job to start building your professional timeline with achievements and projects.
         </p>
-        <Link 
-          href="/jobs"
-          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-        >
-          Add Your First Job
-        </Link>
+        <div className="flex items-center justify-center gap-3">
+          <Link
+            href="/jobs"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          >
+            Add Your First Job
+          </Link>
+          <ImportButton />
+        </div>
       </Card>
     );
   }

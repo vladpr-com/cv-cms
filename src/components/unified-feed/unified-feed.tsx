@@ -12,6 +12,7 @@ import { CreateHighlightDialog } from '@/components/dialogs/highlight-dialog';
 import { AuthButton } from '@/components/auth/auth-button';
 import { ModeIndicator } from '@/components/auth/mode-indicator';
 import { ContactsEditor } from '@/components/profile/contacts-editor';
+import { ImportButton } from '@/components/import-button';
 import { Settings, Plus, Sparkles, Pencil, Mail, Phone, MapPin, Linkedin, Github, Globe, Send } from 'lucide-react';
 import Link from 'next/link';
 import type { HighlightType, JobWithFilteredHighlights } from '@/lib/data-types';
@@ -398,16 +399,19 @@ function UnifiedFeedContent({
                 <br />
                 Add your first job to get started.
               </p>
-              <CreateJobDialog
-                onSuccess={handleUpdate}
-                mode={mode}
-                trigger={
-                  <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-foreground text-background rounded-md hover:bg-foreground/90 transition-colors">
-                    <Plus className="h-4 w-4" />
-                    Add Your First Job
-                  </button>
-                }
-              />
+              <div className="flex items-center justify-center gap-3">
+                <CreateJobDialog
+                  onSuccess={handleUpdate}
+                  mode={mode}
+                  trigger={
+                    <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-foreground text-background rounded-md hover:bg-foreground/90 transition-colors">
+                      <Plus className="h-4 w-4" />
+                      Add Your First Job
+                    </button>
+                  }
+                />
+                <ImportButton onSuccess={handleUpdate} />
+              </div>
             </div>
           ) : hasActiveFilters && filteredHighlights === 0 ? (
             <div className="py-24 text-center">
