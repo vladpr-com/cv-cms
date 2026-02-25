@@ -4,6 +4,14 @@ A multi-tenant Headless CMS for managing professional career data. Store atomic 
 
 **[Demo](https://cv.vladpr.com)**
 
+## Screenshots
+
+### Timeline View
+![Timeline View — career highlights grouped by job](public/home.png)
+
+### AI Resume Optimizer
+![AI Resume Optimizer — paste a vacancy and get a tailored resume](public/optimize.png)
+
 ## Features
 
 - **Atomic Highlights** — Break down experience into granular, reusable units with metrics, skills, domains, and keywords
