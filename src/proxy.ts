@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   if (!process.env.TURSO_ADMIN_DB_URL) {
     return NextResponse.next();
   }
