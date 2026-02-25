@@ -1,5 +1,7 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+
+const errorMessages: Record<string, string> = {
+  OAuthAccountNotLinked:
+    'This email is already associated with another sign-in method. Please sign in using the provider you originally used.',
+  OAuthSignin: 'Could not start the sign-in process. Please try again.',
+  OAuthCallbackError: 'Something went wrong during sign-in. Please try again.',
+  Default: 'An unexpected error occurred. Please try again.',
+};
 
 function GitHubIcon({ className }: { className?: string }) {
   return (
@@ -42,10 +52,21 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-export default function SignInPage() {
+function SignInContent() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get('error');
+  const errorMessage = error
+    ? errorMessages[error] || errorMessages.Default
+    : null;
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-sm space-y-6">
+        {errorMessage && (
+          <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
+            {errorMessage}
+          </div>
+        )}
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Sign in to CV CMS</CardTitle>
@@ -86,5 +107,13 @@ export default function SignInPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense>
+      <SignInContent />
+    </Suspense>
   );
 }
