@@ -182,7 +182,7 @@ export function HighlightCard({ highlight, onUpdate, onDelete, mode = 'authentic
               onDelete={onDelete}
               mode={mode}
               trigger={
-                <button className="p-1 text-muted-foreground/50 hover:text-foreground opacity-0 group-hover:opacity-100 transition-all">
+                <button className="p-1 text-muted-foreground/50 hover:text-foreground md:opacity-0 md:group-hover:opacity-100 transition-all">
                   <Pencil className="h-3.5 w-3.5" />
                 </button>
               }
