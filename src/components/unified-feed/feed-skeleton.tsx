@@ -35,7 +35,7 @@ function JobCardSkeleton() {
 
 export function FeedSkeleton() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex-1 bg-background">
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <div className="flex items-center justify-between py-6 border-b border-border/40">

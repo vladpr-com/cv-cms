@@ -300,11 +300,11 @@ function UnifiedFeedContent({
   }, [router, mode]);
 
   if (isLoading) {
-    return <div className="min-h-screen bg-background" />;
+    return <div className="flex-1 bg-background" />;
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex-1 bg-background">
       {/* Minimal Header */}
       <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">

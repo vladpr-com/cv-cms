@@ -60,7 +60,7 @@ function SignInContent() {
     : null;
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="flex-1 bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-sm space-y-6">
         {errorMessage && (
           <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-sm text-destructive">
