@@ -17,6 +17,15 @@ import type {
   BackupHighlight,
   ImportResult,
 } from '@/lib/data-types';
+import {
+  slugify,
+  ensureUniqueSlug,
+  buildJobSlug,
+  buildHighlightSlug,
+  uuidFromSlug,
+  slugRegex,
+} from '@/lib/slug';
+import { normalizeImportData } from '@/lib/normalize-import';
 
 // ============ TYPES ============
 
@@ -360,63 +369,6 @@ export async function getAllSkills(): Promise<string[]> {
 
 // ============ BACKUP & IMPORT ============
 
-const slugRegex = /^[\p{L}\p{N}]+(?:-[\p{L}\p{N}]+)*$/u;
-
-function slugify(value: string, fallback: string) {
-  const slug = value
-    .toLowerCase()
-    .normalize('NFKD')
-    .replace(/[^\p{L}\p{N}]+/gu, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-  return slug || fallback;
-}
-
-function ensureUniqueSlug(base: string, used: Map<string, number>) {
-  const count = used.get(base) ?? 0;
-  if (count === 0) {
-    used.set(base, 1);
-    return base;
-  }
-
-  const next = count + 1;
-  used.set(base, next);
-  return `${base}-${next}`;
-}
-
-function buildJobSlug(job: Job) {
-  return slugify(`${job.company}-${job.role}-${job.startDate}`, 'job');
-}
-
-function buildHighlightSlug(highlight: Highlight, jobSlug?: string | null) {
-  const base = jobSlug
-    ? `${jobSlug}-${highlight.title}-${highlight.startDate}`
-    : `${highlight.title}-${highlight.startDate}`;
-  return slugify(base, 'highlight');
-}
-
-async function uuidFromSlug(slug: string) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(`build-cv:${slug}`);
-  let hashBytes: Uint8Array;
-
-  if (globalThis.crypto?.subtle) {
-    const hash = await globalThis.crypto.subtle.digest('SHA-1', data);
-    hashBytes = new Uint8Array(hash);
-  } else {
-    const { createHash } = await import('crypto');
-    hashBytes = new Uint8Array(createHash('sha1').update(data).digest());
-  }
-
-  const bytes = hashBytes.slice(0, 16);
-  bytes[6] = (bytes[6] & 0x0f) | 0x50;
-  bytes[8] = (bytes[8] & 0x3f) | 0x80;
-
-  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-}
-
 export async function exportDatabase(): Promise<BackupData> {
   // Export uses slug-based IDs for portability
   const session = await auth();
@@ -542,7 +494,8 @@ export async function importDatabase(backupData: unknown): Promise<ImportResult>
   };
 
   try {
-    const validated = backupDataSchema.parse(backupData);
+    const normalized = normalizeImportData(backupData);
+    const validated = backupDataSchema.parse(normalized);
 
     const session = await auth();
     if (!session?.user?.id) {

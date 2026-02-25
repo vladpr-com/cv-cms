@@ -18,6 +18,7 @@ import type {
   BackupData,
   ImportResult,
 } from '@/lib/data-types';
+import { normalizeImportData } from '@/lib/normalize-import';
 
 interface DexieJob extends Job {}
 interface DexieHighlight extends Highlight {}
@@ -400,7 +401,8 @@ export class ClientDataLayer implements DataLayer {
     };
   }
 
-  async importDatabase(data: BackupData): Promise<ImportResult> {
+  async importDatabase(rawData: BackupData): Promise<ImportResult> {
+    const data = normalizeImportData(rawData);
     const result: ImportResult = {
       success: false,
       jobsImported: 0,

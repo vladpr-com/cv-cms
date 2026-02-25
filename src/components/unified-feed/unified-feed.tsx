@@ -13,6 +13,7 @@ import { AuthButton } from '@/components/auth/auth-button';
 import { ModeIndicator } from '@/components/auth/mode-indicator';
 import { ContactsEditor } from '@/components/profile/contacts-editor';
 import { ImportButton } from '@/components/import-button';
+import { GenerateWithAIDialog } from '@/components/generate-with-ai-dialog';
 import { Settings, Plus, Sparkles, Pencil, Mail, Phone, MapPin, Linkedin, Github, Globe, Send } from 'lucide-react';
 import Link from 'next/link';
 import type { HighlightType, JobWithFilteredHighlights } from '@/lib/data-types';
@@ -411,6 +412,7 @@ function UnifiedFeedContent({
                   }
                 />
                 <ImportButton onSuccess={handleUpdate} />
+                <GenerateWithAIDialog />
               </div>
             </div>
           ) : hasActiveFilters && filteredHighlights === 0 ? (

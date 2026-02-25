@@ -6,6 +6,7 @@ import { Upload } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { importDatabase } from '@/app/actions';
 import type { BackupData } from '@/lib/data-types';
+import { normalizeImportData } from '@/lib/normalize-import';
 
 interface ImportButtonProps {
   variant?: 'primary' | 'outline';
@@ -26,7 +27,7 @@ export function ImportButton({ variant = 'outline', onSuccess }: ImportButtonPro
     setIsImporting(true);
     try {
       const text = await file.text();
-      const data = JSON.parse(text) as BackupData;
+      const data = normalizeImportData(JSON.parse(text));
 
       if (isAuthenticated) {
         const result = await importDatabase(data);
