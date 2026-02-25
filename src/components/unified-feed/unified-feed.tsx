@@ -122,10 +122,15 @@ function UnifiedFeedContent({
   const [nameInputValue, setNameInputValue] = useState('');
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [showContactsEditor, setShowContactsEditor] = useState(false);
+  const [hasWebhookUrl, setHasWebhookUrl] = useState(false);
 
   const totalHighlights = jobs.reduce((sum, job) => sum + job.allHighlightsCount, 0);
   const filteredHighlights = jobs.reduce((sum, job) => sum + job.highlights.length, 0);
   const totalPositions = jobs.length;
+
+  useEffect(() => {
+    setHasWebhookUrl(!!localStorage.getItem('n8n-webhook-url'));
+  }, []);
 
   // Anonymous mode: load data from IndexedDB on mount
   useEffect(() => {
@@ -341,7 +346,7 @@ function UnifiedFeedContent({
               </p>
             </div>
             <div className="flex items-center gap-3">
-              {mode === 'authenticated' && (
+              {(mode === 'authenticated' || hasWebhookUrl) && (
                 <Link
                   href="/optimize"
                   className="p-2 text-muted-foreground hover:text-foreground transition-colors"
