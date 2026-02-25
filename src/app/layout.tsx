@@ -50,6 +50,8 @@ export default function RootLayout({
               <a href="/privacy" className="underline hover:text-foreground">Privacy Policy</a>
               <span className="mx-2">&middot;</span>
               <a href="/terms" className="underline hover:text-foreground">Terms of Service</a>
+              <span className="mx-2">&middot;</span>
+              <a href="https://github.com/vladpr-com/cv-cms" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">GitHub</a>
             </footer>
           </div>
         </Providers>
