@@ -401,18 +401,8 @@ function UnifiedFeedContent({
                 Add your first job to get started.
               </p>
               <div className="flex items-center justify-center gap-3">
-                <CreateJobDialog
-                  onSuccess={handleUpdate}
-                  mode={mode}
-                  trigger={
-                    <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-foreground text-background rounded-md hover:bg-foreground/90 transition-colors">
-                      <Plus className="h-4 w-4" />
-                      Add Your First Job
-                    </button>
-                  }
-                />
-                <ImportButton onSuccess={handleUpdate} />
                 <GenerateWithAIDialog />
+                <ImportButton onSuccess={handleUpdate} />
               </div>
             </div>
           ) : hasActiveFilters && filteredHighlights === 0 ? (

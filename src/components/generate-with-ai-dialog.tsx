@@ -77,7 +77,7 @@ export function GenerateWithAIDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors">
+        <button className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-foreground text-background rounded-md hover:bg-foreground/90 transition-colors">
           <Sparkles className="h-4 w-4" />
           Generate with AI
         </button>
