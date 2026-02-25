@@ -63,6 +63,7 @@ kimi-skills/
 
 # Personal data exports
 highlights-*.json
+test-import-*.json
 
 # Personal notes and drafts
 habr/
