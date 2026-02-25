@@ -44,8 +44,7 @@ export default async function HomePage({
 
   if (session?.user) {
     // Authenticated: server-side fetch
-    // If DB isn't provisioned yet (new user), catch the error and render empty —
-    // MigrationHandler (client-side) will provision the DB and reload the page
+    // getDataLayer() auto-provisions the DB for new users, but keep try/catch as safety net
     try {
       const [jobs, domains, skills] = await Promise.all([
         searchJobsWithHighlights(filters),

@@ -49,6 +49,7 @@ export type {
 /**
  * Get the appropriate DataLayer for the current user.
  * Requires authentication — anonymous users use ClientDataLayer directly.
+ * Auto-provisions the user's database on first access if it doesn't exist yet.
  */
 async function getDataLayer(): Promise<ServerDataLayer> {
   const session = await auth();
@@ -57,8 +58,16 @@ async function getDataLayer(): Promise<ServerDataLayer> {
     throw new Error('Authentication required');
   }
 
-  const userDb = await getUserDb(session.user.id);
-  return new ServerDataLayer(userDb);
+  try {
+    const userDb = await getUserDb(session.user.id);
+    return new ServerDataLayer(userDb);
+  } catch {
+    // DB not found — auto-provision for new users
+    const { provisionUserDatabase } = await import('@/app/actions/user-db');
+    await provisionUserDatabase();
+    const userDb = await getUserDb(session.user.id);
+    return new ServerDataLayer(userDb);
+  }
 }
 
 // ============ PROFILE ACTIONS ============
