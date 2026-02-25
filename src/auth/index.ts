@@ -37,6 +37,9 @@ function createAuth() {
       verificationTokensTable: verificationTokens,
     }),
     providers: [GitHub, Google],
+    pages: {
+      signIn: '/signin',
+    },
     session: {
       strategy: 'jwt',
     },
