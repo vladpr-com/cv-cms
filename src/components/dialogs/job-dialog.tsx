@@ -9,10 +9,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { JobForm, JobFormData } from '@/components/forms/job-form';
-import { Plus, Pencil } from 'lucide-react';
-import { createJob, updateJob } from '@/app/actions';
+import { Plus, Pencil, Trash } from 'lucide-react';
+import { createJob, updateJob, deleteJob } from '@/app/actions';
 import type { Job } from '@/lib/data-types';
 import { useRouter } from 'next/navigation';
 
@@ -102,6 +113,7 @@ export function CreateJobDialog({
 interface EditJobDialogProps {
   job: Job;
   onSuccess?: () => void;
+  onDelete?: () => void;
   trigger?: React.ReactNode;
   mode?: 'anonymous' | 'authenticated';
 }
@@ -109,6 +121,7 @@ interface EditJobDialogProps {
 export function EditJobDialog({
   job,
   onSuccess,
+  onDelete,
   trigger,
   mode = 'authenticated',
 }: EditJobDialogProps) {
@@ -154,6 +167,26 @@ export function EditJobDialog({
     }
   }
 
+  async function handleDelete() {
+    setIsLoading(true);
+    try {
+      if (mode === 'anonymous') {
+        const { ClientDataLayer } = await import('@/lib/data-layer/client-data-layer');
+        const dl = new ClientDataLayer();
+        await dl.deleteJob(job.id);
+      } else {
+        await deleteJob(job.id);
+        router.refresh();
+      }
+      setOpen(false);
+      onDelete?.();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete job');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
@@ -185,6 +218,30 @@ export function EditJobDialog({
           isLoading={isLoading}
           submitLabel="Update Job"
         />
+        <div className="pt-4 border-t">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="sm" className="w-full" disabled={isLoading}>
+                <Trash className="w-4 h-4 mr-2" />
+                Delete Job
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Job</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete &quot;{job.company}&quot;? Highlights linked to this job will be kept but unlinked. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete} className="bg-red-500 hover:bg-red-600">
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </DialogContent>
     </Dialog>
   );
