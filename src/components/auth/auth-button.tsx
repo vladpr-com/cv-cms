@@ -4,7 +4,17 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { LogIn, LogOut } from 'lucide-react';
 
+const authEnabled = process.env.NEXT_PUBLIC_AUTH_ENABLED === 'true';
+
 export function AuthButton() {
+  if (!authEnabled) {
+    return null;
+  }
+
+  return <AuthButtonInner />;
+}
+
+function AuthButtonInner() {
   const { data: session, status } = useSession();
 
   if (status === 'loading') {

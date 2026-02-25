@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { Suspense } from 'react';
 import { UnifiedFeed } from '@/components/unified-feed';
 import { FeedSkeleton } from '@/components/unified-feed/feed-skeleton';
@@ -6,7 +8,7 @@ import {
   getAllDomains,
   getAllSkills,
 } from '@/app/actions';
-import { auth } from '@/auth';
+import { isAuthEnabled } from '@/lib/auth-config';
 import type { HighlightType } from '@/lib/data-types';
 
 interface SearchParams {
@@ -22,7 +24,13 @@ export default async function HomePage({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  const session = await auth();
+  let session = null;
+
+  if (isAuthEnabled()) {
+    const { auth } = await import('@/auth');
+    session = await auth();
+  }
+
   const params = await searchParams;
 
   // Parse filters from URL

@@ -13,59 +13,67 @@ import type { DataLayer } from '@/lib/data-layer/types';
 type DataMode = 'anonymous' | 'authenticated';
 
 interface DataContextValue {
-  dataLayer: DataLayer;
+  dataLayer: DataLayer | null;
   mode: DataMode;
   isReady: boolean;
 }
 
-const DataContext = createContext<DataContextValue | null>(null);
+const DataContext = createContext<DataContextValue>({
+  dataLayer: null,
+  mode: 'anonymous',
+  isReady: false,
+});
+
+const authEnabled = process.env.NEXT_PUBLIC_AUTH_ENABLED === 'true';
 
 export function DataProvider({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
-  const [dataLayer, setDataLayer] = useState<DataLayer | null>(null);
-  const [mode, setMode] = useState<DataMode>('anonymous');
-  const [isReady, setIsReady] = useState(false);
+  const [contextValue, setContextValue] = useState<DataContextValue>({
+    dataLayer: null,
+    mode: 'anonymous',
+    isReady: false,
+  });
 
   useEffect(() => {
     async function init() {
-      if (status === 'loading') return;
+      if (authEnabled && status === 'loading') return;
 
-      if (status === 'authenticated' && session?.user) {
-        // Authenticated user — proxy through server actions
+      if (authEnabled && status === 'authenticated' && session?.user) {
         const { ServerActionProxy } = await import(
           '@/lib/data-layer/server-action-proxy'
         );
-        setDataLayer(new ServerActionProxy());
-        setMode('authenticated');
+        setContextValue({
+          dataLayer: new ServerActionProxy(),
+          mode: 'authenticated',
+          isReady: true,
+        });
       } else {
-        // Anonymous user — use IndexedDB
         const { ClientDataLayer } = await import(
           '@/lib/data-layer/client-data-layer'
         );
-        setDataLayer(new ClientDataLayer());
-        setMode('anonymous');
+        setContextValue({
+          dataLayer: new ClientDataLayer(),
+          mode: 'anonymous',
+          isReady: true,
+        });
       }
-      setIsReady(true);
     }
 
     init();
   }, [status, session]);
 
-  if (!dataLayer || !isReady) {
-    return <>{children}</>;
-  }
-
   return (
-    <DataContext.Provider value={{ dataLayer, mode, isReady }}>
+    <DataContext.Provider value={contextValue}>
       {children}
     </DataContext.Provider>
   );
 }
 
-export function useDataLayer(): DataContextValue {
+export function useDataLayer(): DataContextValue & { dataLayer: DataLayer } {
   const ctx = useContext(DataContext);
-  if (!ctx) {
-    throw new Error('useDataLayer must be used within a DataProvider');
+  if (!ctx.isReady || !ctx.dataLayer) {
+    // Return a typed stub that consumers can check via isReady
+    return ctx as any;
   }
-  return ctx;
+  return ctx as DataContextValue & { dataLayer: DataLayer };
 }

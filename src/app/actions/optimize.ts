@@ -1,7 +1,7 @@
 'use server';
 
-import { auth } from '@/auth';
 import { getProfile, getJobs, getAllHighlightsWithJobs } from '@/app/actions';
+import { isAuthEnabled } from '@/lib/auth-config';
 
 export interface ResumeContacts {
   email?: string;
@@ -31,6 +31,11 @@ export async function generateResume(
   vacancyText: string,
   webhookUrl: string,
 ): Promise<{ data?: ResumeData; error?: string }> {
+  if (!isAuthEnabled()) {
+    return { error: 'Auth not configured — use client-side generation' };
+  }
+
+  const { auth } = await import('@/auth');
   const session = await auth();
   if (!session?.user?.id) {
     return { error: 'Not authenticated' };

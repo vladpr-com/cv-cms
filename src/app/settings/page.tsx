@@ -55,6 +55,8 @@ import {
 
 type Theme = 'light' | 'dark' | 'system';
 
+const authEnabled = process.env.NEXT_PUBLIC_AUTH_ENABLED === 'true';
+
 export default function SettingsPage() {
   const router = useRouter();
   const { data: session, status: authStatus } = useSession();
@@ -237,7 +239,11 @@ export default function SettingsPage() {
               Account
             </CardTitle>
             <CardDescription>
-              {isAuthenticated ? 'Your account information' : 'Sign in to sync your data across devices'}
+              {isAuthenticated
+                ? 'Your account information'
+                : authEnabled
+                  ? 'Sign in to sync your data across devices'
+                  : 'Local mode — data is stored in your browser'}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -258,7 +264,7 @@ export default function SettingsPage() {
             ) : (
               <p className="text-sm text-muted-foreground">
                 You&apos;re using CV CMS in local mode. Your data is stored in your browser.
-                Sign in to sync your data to the cloud.
+                {authEnabled && ' Sign in to sync your data to the cloud.'}
               </p>
             )}
           </CardContent>
@@ -286,49 +292,47 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* n8n Integration (authenticated only) */}
-        {isAuthenticated && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Database className="h-5 w-5" />
-                n8n Integration
-              </CardTitle>
-              <CardDescription>
-                Connect external tools to read your data
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Webhook URL</label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="url"
-                    placeholder="https://your-n8n.example.com/webhook/..."
-                    value={webhookUrl}
-                    onChange={(e) => setWebhookUrl(e.target.value)}
-                    className="flex-1 text-sm font-mono"
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleSaveWebhookUrl}
-                  >
-                    {webhookSaved ? (
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                    ) : (
-                      'Save'
-                    )}
-                  </Button>
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Your n8n webhook URL for resume optimization. Stored only in your browser.
-                </p>
+        {/* n8n Integration */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Database className="h-5 w-5" />
+              n8n Integration
+            </CardTitle>
+            <CardDescription>
+              Connect external tools to read your data
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Webhook URL</label>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="url"
+                  placeholder="https://your-n8n.example.com/webhook/..."
+                  value={webhookUrl}
+                  onChange={(e) => setWebhookUrl(e.target.value)}
+                  className="flex-1 text-sm font-mono"
+                />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSaveWebhookUrl}
+                >
+                  {webhookSaved ? (
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                  ) : (
+                    'Save'
+                  )}
+                </Button>
               </div>
+              <p className="text-xs text-muted-foreground">
+                Your n8n webhook URL for resume optimization. Stored only in your browser.
+              </p>
+            </div>
 
-            </CardContent>
-          </Card>
-        )}
+          </CardContent>
+        </Card>
 
         {/* Theme Section */}
         <Card>
