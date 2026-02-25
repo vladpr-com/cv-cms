@@ -10,24 +10,26 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-const PROMPT_TEMPLATE = `I need you to create a JSON file with my professional career data. I'll answer your questions, and you'll generate a JSON file I can import into my CV manager.
+const PROMPT_TEMPLATE = `Extract my professional experience from the attached materials and generate a structured JSON file for import into my CV manager.
 
-Ask me about:
-1. My name and contact info (email, phone, location, LinkedIn, GitHub, website, Telegram — all optional)
-2. My work history (company, role, start/end dates)
-3. For each job, my key achievements, projects, and responsibilities — with specific metrics where possible
+I may attach:
+- A transcript of a voice conversation about my career
+- My existing CV/resume (PDF or text)
+- Both — in that case, merge the information, preferring more detailed descriptions
 
-Then generate a JSON file in this exact format:
+Your goal: extract every distinct achievement, project, responsibility, education item, and course — and structure them as atomic "highlights" linked to jobs.
+
+Guidelines for extraction:
+- Split large responsibilities into separate highlights — one per distinct topic
+- Write "content" in first person, professionally, with context and impact
+- Infer metrics from the text where possible (e.g., "managed a team of 5" → metric)
+- If dates are vague (e.g., "around 2019"), use your best estimate with "01" for unknown day/month
+- Don't skip anything — it's better to have more highlights that can be filtered later
+
+Output this exact JSON format:
 
 \`\`\`json
 {
-  "profile": {
-    "fullName": "John Doe",
-    "email": "john@example.com",
-    "location": "San Francisco, CA",
-    "linkedin": "https://linkedin.com/in/johndoe",
-    "github": "https://github.com/johndoe"
-  },
   "jobs": [
     {
       "company": "Company Name",
@@ -55,15 +57,13 @@ Then generate a JSON file in this exact format:
 
 Rules:
 - Dates must be "YYYY-MM-DD" format. Use "01" for day if unknown.
-- "job" field must match the exact company name from the jobs array
+- "job" field must exactly match a company name from the jobs array
 - "type" can be: achievement, project, responsibility, education, course, teaching
 - "metrics" are optional but encouraged — use them for quantifiable results
 - "domains" = business areas (e.g., "Fintech", "E-commerce")
 - "skills" = technologies/tools (e.g., "React", "Python", "Kubernetes")
 - Omit endDate for current positions
-- Profile fields are all optional except fullName
-
-Please start by asking me about my career!`;
+- Output only the JSON, no commentary`;
 
 export function GenerateWithAIDialog() {
   const [copied, setCopied] = useState(false);
@@ -89,18 +89,22 @@ export function GenerateWithAIDialog() {
 
         <div className="space-y-4 text-sm">
           <p className="text-muted-foreground">
-            Use Claude or ChatGPT to create your career data through a guided conversation.
+            Turn a voice conversation transcript or your existing CV into structured career data using AI.
           </p>
 
           <ol className="space-y-3 text-muted-foreground">
             <li className="flex gap-2">
               <span className="font-medium text-foreground shrink-0">1.</span>
-              <span>Copy the prompt below</span>
+              <span>Record a voice conversation about your career (e.g. ChatGPT voice mode) and transcribe it, or grab your existing CV</span>
             </li>
             <li className="flex gap-2">
               <span className="font-medium text-foreground shrink-0">2.</span>
+              <span>Copy the prompt below</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="font-medium text-foreground shrink-0">3.</span>
               <span>
-                Paste it into{' '}
+                Paste the prompt + your transcript/CV into{' '}
                 <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
                   Claude
                 </a>{' '}
@@ -111,16 +115,8 @@ export function GenerateWithAIDialog() {
               </span>
             </li>
             <li className="flex gap-2">
-              <span className="font-medium text-foreground shrink-0">3.</span>
-              <span>Answer its questions about your career</span>
-            </li>
-            <li className="flex gap-2">
               <span className="font-medium text-foreground shrink-0">4.</span>
-              <span>Save the generated JSON as a <code className="text-xs bg-muted px-1 py-0.5 rounded">.json</code> file</span>
-            </li>
-            <li className="flex gap-2">
-              <span className="font-medium text-foreground shrink-0">5.</span>
-              <span>Import it using the &ldquo;Import Backup&rdquo; button</span>
+              <span>Save the generated JSON as a <code className="text-xs bg-muted px-1 py-0.5 rounded">.json</code> file and import it here</span>
             </li>
           </ol>
 
