@@ -4,13 +4,7 @@ A multi-tenant Headless CMS for managing professional career data. Store atomic 
 
 **[Demo](https://cv.vladpr.com)**
 
-## Screenshots
-
-### Timeline View
 <a href="public/home.png"><img src="public/home.png" alt="Timeline View — career highlights grouped by job" width="600"></a>
-
-### AI Resume Optimizer
-<a href="public/optimize.png"><img src="public/optimize.png" alt="AI Resume Optimizer — paste a vacancy and get a tailored resume" width="600"></a>
 
 ## Features
 
@@ -24,6 +18,8 @@ A multi-tenant Headless CMS for managing professional career data. Store atomic 
 - **AI Resume Optimizer** — Paste a job posting, get a tailored resume via n8n webhook integration
 - **Inline Editing** — Edit generated resumes directly in the browser before exporting to PDF
 - **Backup & Restore** — Full JSON export/import with idempotent slug-based IDs
+
+<a href="public/optimize.png"><img src="public/optimize.png" alt="AI Resume Optimizer — paste a vacancy and get a tailored resume" width="600"></a>
 
 ## Tech Stack
 
