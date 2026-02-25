@@ -54,7 +54,7 @@ export async function createUserDatabase(userId: string): Promise<CreateDatabase
 
   if (createRes.ok) {
     const createData = await createRes.json();
-    const hostname = createData.database?.hostname;
+    const hostname = createData.database?.Hostname || createData.database?.hostname;
     if (!hostname) {
       throw new Error('No hostname returned from database creation');
     }
@@ -69,7 +69,7 @@ export async function createUserDatabase(userId: string): Promise<CreateDatabase
       throw new Error(`Failed to get existing database: ${getRes.status} ${await getRes.text()}`);
     }
     const getData = await getRes.json();
-    const hostname = getData.database?.hostname;
+    const hostname = getData.database?.Hostname || getData.database?.hostname;
     if (!hostname) {
       throw new Error('No hostname returned for existing database');
     }
