@@ -44,23 +44,40 @@ export default async function HomePage({
 
   if (session?.user) {
     // Authenticated: server-side fetch
-    const [jobs, domains, skills] = await Promise.all([
-      searchJobsWithHighlights(filters),
-      getAllDomains(),
-      getAllSkills(),
-    ]);
+    // If DB isn't provisioned yet (new user), catch the error and render empty —
+    // MigrationHandler (client-side) will provision the DB and reload the page
+    try {
+      const [jobs, domains, skills] = await Promise.all([
+        searchJobsWithHighlights(filters),
+        getAllDomains(),
+        getAllSkills(),
+      ]);
 
-    return (
-      <Suspense fallback={<FeedSkeleton />}>
-        <UnifiedFeed
-          initialJobs={jobs}
-          domains={domains}
-          skills={skills}
-          searchJobsAction={searchJobsWithHighlights}
-          mode="authenticated"
-        />
-      </Suspense>
-    );
+      return (
+        <Suspense fallback={<FeedSkeleton />}>
+          <UnifiedFeed
+            initialJobs={jobs}
+            domains={domains}
+            skills={skills}
+            searchJobsAction={searchJobsWithHighlights}
+            mode="authenticated"
+          />
+        </Suspense>
+      );
+    } catch {
+      // DB not yet provisioned — render empty, MigrationHandler will handle setup
+      return (
+        <Suspense fallback={<FeedSkeleton />}>
+          <UnifiedFeed
+            initialJobs={[]}
+            domains={[]}
+            skills={[]}
+            searchJobsAction={searchJobsWithHighlights}
+            mode="authenticated"
+          />
+        </Suspense>
+      );
+    }
   }
 
   // Anonymous: pass empty initial data, UnifiedFeed loads from IndexedDB
