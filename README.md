@@ -7,10 +7,10 @@ A multi-tenant Headless CMS for managing professional career data. Store atomic 
 ## Screenshots
 
 ### Timeline View
-![Timeline View — career highlights grouped by job](public/home.png)
+<a href="public/home.png"><img src="public/home.png" alt="Timeline View — career highlights grouped by job" width="600"></a>
 
 ### AI Resume Optimizer
-![AI Resume Optimizer — paste a vacancy and get a tailored resume](public/optimize.png)
+<a href="public/optimize.png"><img src="public/optimize.png" alt="AI Resume Optimizer — paste a vacancy and get a tailored resume" width="600"></a>
 
 ## Features
 
