@@ -117,7 +117,15 @@ The `/optimize` page integrates with an external n8n workflow for AI resume gene
 4. n8n workflow processes the data with an LLM and returns a structured JSON resume
 5. Server action injects contact info from the profile DB (personal data is never sent to the LLM)
 
-You can build any n8n workflow that accepts `{ vacancyText, highlightsData }` via webhook POST and returns a JSON resume. See the `ResumeData` type in `src/app/actions/optimize.ts` for the expected response format.
+### Quick Setup
+
+1. **Download** the [Resume Optimizer template](https://cv-cms.com/templates/resume-optimizer.json) (or import it in n8n from URL)
+2. **Open** n8n → Import Workflow → paste the URL or upload the JSON file
+3. **Configure** the LLM node with your API key (OpenAI, Anthropic, etc.)
+4. **Activate** the workflow — copy the webhook URL from the Webhook node
+5. **Paste** the webhook URL in CV CMS → Settings → n8n Webhook URL
+
+You can also build your own workflow — it should accept `{ vacancyText, highlightsData }` via webhook POST and return a JSON resume. See the `ResumeData` type in `src/app/actions/optimize.ts` for the expected response format.
 
 ## Commands
 
