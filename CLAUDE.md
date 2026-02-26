@@ -11,7 +11,7 @@ CV CMS is a multi-tenant Headless CMS for managing professional career data. Use
 - **On first login**, local data auto-migrates to the user's Turso DB
 - **Authenticated users** can see their Turso read-only token + DB URL for n8n integration
 
-**Production URL:** https://cv.vladpr.com
+**Production URL:** https://cv-cms.com
 
 ## Commands
 

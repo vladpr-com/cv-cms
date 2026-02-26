@@ -2,7 +2,7 @@
 
 A multi-tenant Headless CMS for managing professional career data. Store atomic "highlights" (achievements, projects, responsibilities) with rich metadata, and generate AI-tailored resumes.
 
-**[Demo](https://cv.vladpr.com)**
+**[Demo](https://cv-cms.com)**
 
 <a href="public/home.png"><img src="public/home.png" alt="Timeline View — career highlights grouped by job" width="600"></a>
 
