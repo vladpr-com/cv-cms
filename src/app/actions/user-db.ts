@@ -247,3 +247,30 @@ export async function migrateLocalData(data: {
     highlightsMigrated: data.highlights.length,
   };
 }
+
+/**
+ * Check if the user's Turso DB already contains any jobs or highlights.
+ * Used by MigrationHandler to decide whether to migrate or skip.
+ */
+export async function hasServerData(): Promise<boolean> {
+  const session = await auth();
+  if (!session?.user?.id) return false;
+
+  const adminDb = getAdminDb();
+  const userDbRecord = await adminDb
+    .select()
+    .from(userDatabases)
+    .where(eq(userDatabases.userId, session.user.id))
+    .limit(1);
+
+  const record = userDbRecord[0];
+  if (!record || record.status !== 'ready') return false;
+
+  const userDb = createDbFromCredentials(record.tursoDbUrl, record.tursoAuthToken);
+
+  const jobRows = await userDb.select({ id: jobs.id }).from(jobs).limit(1);
+  if (jobRows.length > 0) return true;
+
+  const highlightRows = await userDb.select({ id: highlights.id }).from(highlights).limit(1);
+  return highlightRows.length > 0;
+}

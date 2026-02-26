@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
-import { getUserDatabaseStatus, provisionUserDatabase, migrateLocalData } from '@/app/actions/user-db';
+import { getUserDatabaseStatus, provisionUserDatabase, migrateLocalData, hasServerData } from '@/app/actions/user-db';
 
 type MigrationStep = 'checking' | 'provisioning' | 'migrating' | 'done' | 'error' | null;
 
@@ -21,38 +21,55 @@ export function MigrationHandler() {
       try {
         setStep('checking');
 
-        // Check if user already has a ready database
+        // Ensure the user's database exists
         const dbStatus = await getUserDatabaseStatus();
-        if (dbStatus === 'ready') {
-          setStep(null);
-          return;
+        if (dbStatus !== 'ready') {
+          setStep('provisioning');
+          await provisionUserDatabase();
         }
 
-        // Provision new database
-        setStep('provisioning');
-        await provisionUserDatabase();
-
-        // Check if IndexedDB has data to migrate
-        setStep('migrating');
+        // Always check IndexedDB for local data, regardless of DB status
+        let localData: { jobs: unknown[]; highlights: unknown[]; profile?: { fullName?: string } } | null = null;
         try {
           const { ClientDataLayer } = await import('@/lib/data-layer/client-data-layer');
           const clientDl = new ClientDataLayer();
-          const localData = await clientDl.exportAllRawData();
+          const exported = await clientDl.exportAllRawData();
 
-          if (localData.jobs.length > 0 || localData.highlights.length > 0) {
-            await migrateLocalData(localData);
-            await clientDl.clearDatabase();
+          const hasLocalData =
+            exported.jobs.length > 0 ||
+            exported.highlights.length > 0 ||
+            !!exported.profile?.fullName;
+
+          if (hasLocalData) {
+            localData = exported;
+          } else {
+            // No local data — nothing to migrate
+            setStep(null);
+            return;
           }
+
+          // Check if server DB already has data
+          const serverHasData = await hasServerData();
+
+          if (serverHasData) {
+            // Server already has data — keep IndexedDB intact to avoid losing local work
+            setStep(null);
+            return;
+          }
+
+          // Server is empty and we have local data — migrate
+          setStep('migrating');
+          await migrateLocalData(localData as Parameters<typeof migrateLocalData>[0]);
+          await clientDl.clearDatabase();
+
+          setStep('done');
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         } catch {
           // IndexedDB might not be available or empty — that's fine
+          setStep(null);
         }
-
-        setStep('done');
-
-        // Reload to pick up the new database
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
       } catch (error) {
         console.error('Migration failed:', error);
         setErrorMessage(error instanceof Error ? error.message : 'Setup failed');
