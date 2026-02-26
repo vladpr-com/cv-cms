@@ -1,0 +1,269 @@
+{
+  "name": "Resume Optimizer",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "resume-optimize",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ab23e6cf-6aed-44ae-b3e4-be3c1676f2d2",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        96
+      ],
+      "webhookId": "resume-optimize",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "condition-vacancy",
+              "leftValue": "={{ ($json.body.vacancyText || '').length >= 50 }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a9b67c9c-700d-433f-8dd0-7256a26f481a",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"error\": \"vacancyText is required and must be at least 50 characters\"}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "id": "c5586d8a-46a3-42d9-a788-5e0ac6a53894",
+      "name": "Error Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $('Webhook').item.json.body;\nconst vacancyText = body.vacancyText || '';\nconst highlightsData = JSON.stringify(body.highlightsData || {}, null, 2);\n\nreturn [{\n  json: {\n    user_prompt: 'Generate an optimized resume JSON for this job posting.\\n\\nJOB POSTING:\\n' + vacancyText + '\\n\\nCANDIDATE CAREER DATA:\\n' + highlightsData\n  }\n}];"
+      },
+      "id": "9872dbc4-ca68-40fe-bbb1-191681bd1fdf",
+      "name": "Prepare Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-5.2",
+        "options": {
+          "temperature": 0.3,
+          "timeout": 120000,
+          "maxRetries": 2
+        }
+      },
+      "id": "51a8965f-0629-41a0-aae6-5c122cf87ac1",
+      "name": "OpenRouter Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        240,
+        192
+      ],
+      "credentials": {
+        "openRouterApi": {
+          "id": "ZWE4fSp3S8TRyFsm",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ resume: $json.text || '' }) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "b1a3f84c-ab19-4200-8a7d-362f22212c19",
+      "name": "Send Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        576,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.user_prompt }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are a professional resume optimization assistant. You create tailored resumes from the candidate's career data for specific job postings.\n\nIMPORTANT: Write the resume in the SAME LANGUAGE as the job posting. If the vacancy is in Russian, write the resume in Russian. If in English, write in English.\n\n## YOUR PROCESS\n\n### Step 1: Analyze the Job Posting\nExtract: job title, company, required skills/technologies, experience requirements, key responsibilities, industry keywords.\n\n### Step 2: Analyze Candidate Data\nReview the candidate's career data provided in the user message.\n\n### Step 3: Generate the Resume as JSON\n\nYou MUST output a valid JSON object with this exact structure:\n```json\n{\n  \"name\": \"Full Name\",\n  \"contacts\": { \"email\": \"...\", \"linkedin\": \"...\", \"github\": \"...\" },\n  \"summary\": \"2-3 sentence professional summary tailored to this specific job\",\n  \"experience\": [\n    {\n      \"company\": \"Company Name\",\n      \"role\": \"Role Title\",\n      \"period\": \"Jan 2020 - Dec 2023\",\n      \"bullets\": [\"Achievement with metrics using Technology...\"]\n    }\n  ],\n  \"skills\": [\"Python\", \"SQL\", \"Docker\"],\n  \"education\": [\n    { \"institution\": \"University\", \"degree\": \"CS\", \"period\": \"2016-2020\" }\n  ]\n}\n```\n\n#### RESUME CONTENT RULES:\n- Max 3 bullets per job, one line each\n- Focus on RESULTS, not tasks: not \"managed a team\" but \"led a team of 5, launched 4 products generating >1B RUB/year\"\n- Embed specific technologies within achievement descriptions\n- For old or irrelevant experience: include company, role, period only, empty bullets array\n- Keywords: Feature keywords from the job posting IF they exist in the original data\n- ATS optimization: Ensure sufficient keyword overlap with the vacancy\n- Remove obvious skills (Excel, VS Code, Jupyter, GitHub, Jira, bash) unless required by the job\n- Remove irrelevant info: No location, language proficiency, age, hobbies\n- Prioritize relevant experience, compress or omit irrelevant ones\n- Preserve original writing style where possible\n- contacts field: only include fields found in candidate data, omit missing ones\n\n#### STRICT RULES - NEVER VIOLATE:\n- NEVER fabricate job titles, companies, degrees, certifications, or achievements\n- NEVER invent metrics, numbers, or achievements not present in the data\n- NEVER use the em dash symbol, the word \"delve\", or other common LLM text markers\n- NEVER drop work experience or achievements unless they clearly decrease fit\n- You CAN add related technologies plausible from context (Python user = pip, venv)\n- You CAN add umbrella terms inferable from context: \"NLP\" if they did text processing\n- You CAN rephrase metrics with same values: \"1% - 10%\" to \"1-10%\"\n- You CAN reorder and emphasize existing content for relevance\n- Do NOT cut critical content (work experience, education) if you can cut something else\n\n## OUTPUT FORMAT\nReturn ONLY the JSON object. No explanations, no preamble, no markdown code fences. Just the raw JSON."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "5c48faa6-2d85-46c4-8bb1-ad10a2e3de77",
+      "name": "Resume LLM Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### 1. Copy your Webhook URL\nAfter importing this template\n- activate the workflow and copy the **Production URL** from this Webhook node.\n- Paste it into your CV CMS Settings page",
+        "width": 352
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -80
+      ],
+      "id": "938670c2-870c-4a09-86bf-e1ace5ca4974",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 2. Add your OpenRouter API key\nClick this node and setup your **OpenRouter credentials**:\n1. Go to [openrouter.ai](https://openrouter.ai) and create an API key\n2. In this node, click \\\"Credential\\\" → \\\"Create New\\\"\n3. Paste your API key",
+        "height": 176,
+        "width": 352
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        384,
+        160
+      ],
+      "id": "11ae6fb8-2f78-480a-b41a-ce6a87aceb29",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        [
+          {
+            "node": "Prepare Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Prompt": {
+      "main": [
+        [
+          {
+            "node": "Resume LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resume LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Send Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Resume LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6434934d-a921-416c-9c29-076d80611ddb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f0afe3a3bb1b2e8dee3f8131e154366737afc8f57252876ea40856c229c51b48"
+  },
+  "id": "dLdUZ6HeyNe6pn20",
+  "tags": [
+    {
+      "name": "AI",
+      "id": "pxD3fe2u9NjlPxwu",
+      "updatedAt": "2026-02-25T05:59:35.323Z",
+      "createdAt": "2026-02-25T05:59:35.323Z"
+    },
+    {
+      "name": "CV",
+      "id": "r490yVZOnZJ0h6fV",
+      "updatedAt": "2026-02-25T05:59:35.348Z",
+      "createdAt": "2026-02-25T05:59:35.348Z"
+    }
+  ]
+}
