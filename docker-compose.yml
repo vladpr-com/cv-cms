@@ -1,6 +1,9 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        - DOCKER=1
     ports:
       - "3000:3000"
     env_file:
