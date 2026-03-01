@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
   Upload,
   Target,
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 
 function Navbar() {
   return (
-    <nav className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 border-b shadow-sm bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-5xl mx-auto flex items-center justify-between px-6 py-3">
         <Link href="/" className="text-lg font-bold tracking-tight">
           CV CMS
@@ -63,7 +64,7 @@ function Section({
   className?: string;
 }) {
   return (
-    <section className={`py-20 sm:py-24 ${muted ? 'bg-muted/50' : 'bg-background'} ${className}`}>
+    <section className={`py-24 sm:py-32 ${muted ? 'bg-muted/50' : 'bg-background'} ${className}`}>
       <div className="max-w-5xl mx-auto px-6">{children}</div>
     </section>
   );
@@ -71,7 +72,7 @@ function Section({
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-2xl font-bold tracking-tight mb-8">{children}</h2>
+    <h2 className="text-3xl font-bold tracking-tight mb-12">{children}</h2>
   );
 }
 
@@ -79,22 +80,26 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 
 function Hero() {
   return (
-    <section className="py-24 sm:py-32 bg-background">
-      <div className="max-w-5xl mx-auto px-6 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight mb-6">
+    <section className="relative py-28 sm:py-36 bg-background overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+      <div className="relative max-w-5xl mx-auto px-6 text-center">
+        <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm">
+          Open Source &middot; Free to Use
+        </Badge>
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-tight mb-6 max-w-4xl mx-auto">
           A headless CMS for your career data.
           <br />
-          <span className="text-muted-foreground">
+          <span className="bg-gradient-to-r from-primary via-primary/70 to-primary/40 bg-clip-text text-transparent">
             Build a tailored resume in 5 minutes, not an hour.
           </span>
         </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
           Store your entire career as atomic blocks — achievements, projects,
           metrics — and reassemble them into ATS-optimized resumes tailored to
           each job posting.
         </p>
         <div className="flex items-center justify-center gap-4">
-          <Button size="lg" asChild>
+          <Button size="lg" className="shadow-lg shadow-primary/25" asChild>
             <Link href="/app">
               Try Free — No Sign-Up Required
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -141,10 +146,15 @@ function Features() {
         keyword-aligned, professional PDF output.
       </p>
       <div className="grid sm:grid-cols-3 gap-6">
-        {features.map((f) => (
-          <Card key={f.title}>
+        {features.map((f, i) => (
+          <Card key={f.title} className="border-border/50 hover:shadow-lg hover:border-primary/20 transition-all duration-300">
             <CardHeader>
-              <f.icon className="h-8 w-8 text-primary mb-2" />
+              <p className="text-xs text-muted-foreground mb-3 font-medium tracking-wider">
+                {String(i + 1).padStart(2, '0')}
+              </p>
+              <div className="rounded-xl bg-primary/10 p-3 w-fit mb-3">
+                <f.icon className="h-6 w-6 text-primary" />
+              </div>
               <CardTitle className="text-base">{f.title}</CardTitle>
             </CardHeader>
             <CardContent>
@@ -162,20 +172,22 @@ function Features() {
 function CtaTryNow() {
   return (
     <Section>
-      <div className="text-center max-w-2xl mx-auto">
-        <SectionHeading>Try it now — no sign-up required</SectionHeading>
-        <p className="text-muted-foreground mb-8">
-          Paste your LinkedIn URL or upload a PDF. We&apos;ll break it into
-          atomic blocks in under 3 minutes. You&apos;ll see your career the way
-          you&apos;ve never seen it before: structured, tagged, ready to
-          reassemble.
-        </p>
-        <Button size="lg" asChild>
-          <Link href="/app">
-            Try Free — No Sign-Up Required
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
+      <div className="relative rounded-2xl p-px bg-gradient-to-r from-primary/50 via-primary/20 to-primary/50 max-w-3xl mx-auto">
+        <div className="rounded-2xl bg-background px-8 py-12 sm:px-12 text-center">
+          <SectionHeading>Try it now — no sign-up required</SectionHeading>
+          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+            Paste your LinkedIn URL or upload a PDF. We&apos;ll break it into
+            atomic blocks in under 3 minutes. You&apos;ll see your career the way
+            you&apos;ve never seen it before: structured, tagged, ready to
+            reassemble.
+          </p>
+          <Button size="lg" className="shadow-lg shadow-primary/25" asChild>
+            <Link href="/app">
+              Try Free — No Sign-Up Required
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </Section>
   );
@@ -190,14 +202,17 @@ function AhaMoments() {
         Two moments after which you&apos;ll never go back to manual editing
       </SectionHeading>
       <div className="grid sm:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <Sparkles className="h-8 w-8 text-primary mb-2" />
+        <Card className="border-l-4 border-l-primary border-border/50 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+          <div className="absolute top-4 right-6 text-8xl font-bold text-primary/5 leading-none select-none">1</div>
+          <CardHeader className="relative">
+            <div className="rounded-xl bg-primary/10 p-3 w-fit mb-3">
+              <Sparkles className="h-6 w-6 text-primary" />
+            </div>
             <CardTitle className="text-base">
               &quot;I actually have 47 significant achievements&quot;
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="relative">
             <p className="text-sm text-muted-foreground">
               After import, you&apos;ll see your experience decomposed into atoms
               — each with metrics, domains, tech stack, and role context. Most
@@ -206,14 +221,17 @@ function AhaMoments() {
             </p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <Clock className="h-8 w-8 text-primary mb-2" />
+        <Card className="border-l-4 border-l-primary border-border/50 hover:shadow-lg transition-all duration-300 relative overflow-hidden">
+          <div className="absolute top-4 right-6 text-8xl font-bold text-primary/5 leading-none select-none">2</div>
+          <CardHeader className="relative">
+            <div className="rounded-xl bg-primary/10 p-3 w-fit mb-3">
+              <Clock className="h-6 w-6 text-primary" />
+            </div>
             <CardTitle className="text-base">
               &quot;This resume — for this job — in 4 minutes?&quot;
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="relative">
             <p className="text-sm text-muted-foreground">
               Paste a job link, select the highlighted atoms, hit
               &quot;Generate.&quot; The PDF is ready. No copy-pasting between
@@ -264,9 +282,11 @@ function ValuePropositions() {
       </SectionHeading>
       <div className="grid sm:grid-cols-2 gap-6">
         {values.map((v) => (
-          <Card key={v.title}>
+          <Card key={v.title} className="group border-border/50 hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
             <CardHeader>
-              <v.icon className="h-6 w-6 text-primary mb-1" />
+              <div className="rounded-xl bg-primary/10 p-3 w-fit mb-3">
+                <v.icon className="h-6 w-6 text-primary" />
+              </div>
               <CardTitle className="text-base">{v.title}</CardTitle>
             </CardHeader>
             <CardContent>
@@ -294,20 +314,24 @@ function ThatsMe() {
   return (
     <Section muted>
       <SectionHeading>Sound familiar?</SectionHeading>
-      <blockquote className="border-l-4 border-primary pl-4 mb-8 text-muted-foreground italic">
-        You want to land an offer as fast as possible — at a company where your
-        experience actually matters? Or at least stop feeling like 10 years of
-        career equals &quot;not what we&apos;re looking for&quot;?
-      </blockquote>
-      <p className="font-semibold mb-4">This is about you if:</p>
-      <ul className="space-y-3">
-        {painPoints.map((point, i) => (
-          <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-            <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-            <span>{point}</span>
-          </li>
-        ))}
-      </ul>
+      <div className="max-w-3xl mx-auto">
+        <div className="relative border-l-4 border-primary pl-6 mb-10">
+          <p className="text-muted-foreground italic text-lg leading-relaxed">
+            You want to land an offer as fast as possible — at a company where your
+            experience actually matters? Or at least stop feeling like 10 years of
+            career equals &quot;not what we&apos;re looking for&quot;?
+          </p>
+        </div>
+        <p className="font-semibold mb-6 text-lg">This is about you if:</p>
+        <ul className="space-y-3">
+          {painPoints.map((point, i) => (
+            <li key={i} className="flex items-start gap-3 rounded-lg bg-background/60 px-4 py-3 text-sm text-muted-foreground">
+              <CheckCircle className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Section>
   );
 }
@@ -320,27 +344,27 @@ interface Step {
   youGet: string;
 }
 
-function StepTable({ steps }: { steps: Step[] }) {
+function StepRows({ steps }: { steps: Step[] }) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm border-collapse">
-        <thead>
-          <tr className="border-b">
-            <th className="py-2 pr-4 text-left font-semibold text-muted-foreground w-1/6">Step</th>
-            <th className="py-2 pr-4 text-left font-semibold text-muted-foreground w-2/6">What you do</th>
-            <th className="py-2 text-left font-semibold text-muted-foreground w-3/6">What you get</th>
-          </tr>
-        </thead>
-        <tbody>
-          {steps.map((s) => (
-            <tr key={s.step} className="border-b last:border-0">
-              <td className="py-3 pr-4 font-medium align-top">{s.step}</td>
-              <td className="py-3 pr-4 text-muted-foreground align-top">{s.youDo}</td>
-              <td className="py-3 text-muted-foreground align-top">{s.youGet}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="relative ml-6 border-l-2 border-border pl-8 space-y-4">
+      {steps.map((s) => (
+        <div key={s.step} className="relative">
+          <div className="absolute -left-[calc(2rem+5px)] top-3 h-3 w-3 rounded-full bg-primary border-2 border-background" />
+          <div className="rounded-lg border border-border/50 bg-card p-5 hover:shadow-md transition-all duration-300">
+            <p className="text-sm font-semibold text-primary mb-2">{s.step}</p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wider">What you do</p>
+                <p className="text-sm text-foreground">{s.youDo}</p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wider">What you get</p>
+                <p className="text-sm text-foreground">{s.youGet}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -369,29 +393,35 @@ function HowItWorks() {
         How it works: from chaos to a targeted resume in 4 steps
       </SectionHeading>
 
-      <div className="space-y-10">
+      <div className="space-y-14">
         <div>
-          <h3 className="font-semibold mb-4 flex items-center gap-2">
-            <FileText className="h-5 w-5 text-primary" />
+          <h3 className="font-semibold mb-6 flex items-center gap-3 text-lg">
+            <div className="rounded-lg bg-primary/10 p-2">
+              <FileText className="h-5 w-5 text-primary" />
+            </div>
             &quot;I need to quickly build a resume tailored to this specific role&quot;
           </h3>
-          <StepTable steps={coreJob1} />
+          <StepRows steps={coreJob1} />
         </div>
 
         <div>
-          <h3 className="font-semibold mb-4 flex items-center gap-2">
-            <BarChart3 className="h-5 w-5 text-primary" />
+          <h3 className="font-semibold mb-6 flex items-center gap-3 text-lg">
+            <div className="rounded-lg bg-primary/10 p-2">
+              <BarChart3 className="h-5 w-5 text-primary" />
+            </div>
             &quot;I need to understand why I got rejected and fix it&quot;
           </h3>
-          <StepTable steps={coreJob2} />
+          <StepRows steps={coreJob2} />
         </div>
 
         <div>
-          <h3 className="font-semibold mb-4 flex items-center gap-2">
-            <Repeat className="h-5 w-5 text-primary" />
+          <h3 className="font-semibold mb-6 flex items-center gap-3 text-lg">
+            <div className="rounded-lg bg-primary/10 p-2">
+              <Repeat className="h-5 w-5 text-primary" />
+            </div>
             &quot;I can&apos;t spend hours rewriting for 5-10 applications a week&quot;
           </h3>
-          <StepTable steps={coreJob3} />
+          <StepRows steps={coreJob3} />
         </div>
       </div>
     </Section>
@@ -403,26 +433,30 @@ function HowItWorks() {
 function Emotions() {
   return (
     <Section muted>
-      <div className="grid sm:grid-cols-2 gap-10">
+      <div className="grid sm:grid-cols-2 gap-12">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <h2 className="text-3xl font-bold tracking-tight mb-8">
             How you&apos;ll feel
           </h2>
-          <ul className="space-y-4">
-            <li className="flex items-start gap-3">
-              <Heart className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+          <ul className="space-y-5">
+            <li className="flex items-start gap-4 rounded-lg bg-background/60 p-4">
+              <div className="rounded-full bg-primary/10 p-2 mt-0.5 flex-shrink-0">
+                <Heart className="h-5 w-5 text-primary" />
+              </div>
               <div>
-                <p className="font-semibold text-sm">Confidence</p>
+                <p className="font-semibold text-sm mb-1">Confidence</p>
                 <p className="text-sm text-muted-foreground">
                   You know every application goes out with a resume that speaks
                   the language of the job.
                 </p>
               </div>
             </li>
-            <li className="flex items-start gap-3">
-              <Eye className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+            <li className="flex items-start gap-4 rounded-lg bg-background/60 p-4">
+              <div className="rounded-full bg-primary/10 p-2 mt-0.5 flex-shrink-0">
+                <Eye className="h-5 w-5 text-primary" />
+              </div>
               <div>
-                <p className="font-semibold text-sm">Control</p>
+                <p className="font-semibold text-sm mb-1">Control</p>
                 <p className="text-sm text-muted-foreground">
                   You see your entire pipeline: how many applications, which
                   versions, where you got a response. Job search becomes a
@@ -430,10 +464,12 @@ function Emotions() {
                 </p>
               </div>
             </li>
-            <li className="flex items-start gap-3">
-              <Coffee className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+            <li className="flex items-start gap-4 rounded-lg bg-background/60 p-4">
+              <div className="rounded-full bg-primary/10 p-2 mt-0.5 flex-shrink-0">
+                <Coffee className="h-5 w-5 text-primary" />
+              </div>
               <div>
-                <p className="font-semibold text-sm">Calm</p>
+                <p className="font-semibold text-sm mb-1">Calm</p>
                 <p className="text-sm text-muted-foreground">
                   You&apos;re not burning weekends on manual document surgery.
                   There&apos;s time to prep for interviews, rest, recharge.
@@ -443,24 +479,28 @@ function Emotions() {
           </ul>
         </div>
         <div>
-          <h2 className="text-2xl font-bold tracking-tight mb-6">
+          <h2 className="text-3xl font-bold tracking-tight mb-8">
             What the result looks like
           </h2>
-          <ul className="space-y-4">
-            <li className="flex items-start gap-3">
-              <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+          <ul className="space-y-5">
+            <li className="flex items-start gap-4 rounded-lg bg-background/60 p-4">
+              <div className="rounded-full bg-green-500/10 p-2 mt-0.5 flex-shrink-0">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
               <div>
-                <p className="font-semibold text-sm">You land an offer faster</p>
+                <p className="font-semibold text-sm mb-1">You land an offer faster</p>
                 <p className="text-sm text-muted-foreground">
                   Your screening conversion rate goes up when the resume
                   actually hits the mark.
                 </p>
               </div>
             </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+            <li className="flex items-start gap-4 rounded-lg bg-background/60 p-4">
+              <div className="rounded-full bg-green-500/10 p-2 mt-0.5 flex-shrink-0">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
               <div>
-                <p className="font-semibold text-sm">
+                <p className="font-semibold text-sm mb-1">
                   You rebuild professional confidence
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -471,10 +511,12 @@ function Emotions() {
                 </p>
               </div>
             </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+            <li className="flex items-start gap-4 rounded-lg bg-background/60 p-4">
+              <div className="rounded-full bg-green-500/10 p-2 mt-0.5 flex-shrink-0">
+                <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
+              </div>
               <div>
-                <p className="font-semibold text-sm">
+                <p className="font-semibold text-sm mb-1">
                   You spend energy on what matters
                 </p>
                 <p className="text-sm text-muted-foreground">
@@ -514,17 +556,17 @@ function LoweringBarriers() {
   return (
     <Section>
       <SectionHeading>&quot;But...&quot;</SectionHeading>
-      <div className="space-y-4 max-w-3xl">
+      <div className="space-y-3 max-w-3xl">
         {faqs.map((faq) => (
           <details
             key={faq.question}
-            className="group border rounded-lg"
+            className="group rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-300"
           >
             <summary className="flex items-center justify-between cursor-pointer px-5 py-4 font-medium text-sm">
               {faq.question}
-              <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform group-open:rotate-180" />
+              <ChevronDown className="h-4 w-4 text-muted-foreground transition-transform duration-200 group-open:rotate-180" />
             </summary>
-            <div className="px-5 pb-4 text-sm text-muted-foreground">
+            <div className="px-5 pb-4 text-sm text-muted-foreground border-l-4 border-primary ml-5 pl-4">
               {faq.answer}
             </div>
           </details>
@@ -563,8 +605,9 @@ function Competition() {
       <SectionHeading>Why not [alternative]?</SectionHeading>
       <div className="grid sm:grid-cols-3 gap-6">
         {competitors.map((c) => (
-          <Card key={c.label}>
+          <Card key={c.label} className="border-border/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <CardHeader>
+              <Badge variant="secondary" className="w-fit mb-3">{c.label}</Badge>
               <CardTitle className="text-base">{c.quote}</CardTitle>
             </CardHeader>
             <CardContent>
@@ -581,17 +624,17 @@ function Competition() {
 
 function FinalCta() {
   return (
-    <section className="py-20 sm:py-24 bg-background">
+    <section className="py-24 sm:py-32 bg-gradient-to-b from-background via-muted/30 to-muted/50">
       <div className="max-w-5xl mx-auto px-6 text-center">
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-6">
           Your next application can be different
         </h2>
-        <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
+        <p className="text-muted-foreground mb-10 max-w-xl mx-auto text-lg">
           No account. No credit card. No friction. Paste your LinkedIn or upload
           a PDF, see your atoms, generate your first tailored resume. 5 minutes
           to your first PDF.
         </p>
-        <Button size="lg" asChild>
+        <Button size="lg" className="shadow-lg shadow-primary/25" asChild>
           <Link href="/app">
             Try Free — No Sign-Up Required
             <ArrowRight className="ml-2 h-4 w-4" />
