@@ -66,7 +66,7 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="py-32 md:pt-44">
+    <section className="py-20 md:pt-32">
       <div className="mx-auto w-full max-w-5xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-balance font-serif text-4xl font-medium sm:text-5xl">
@@ -114,7 +114,7 @@ const features = [
 
 function Features() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
@@ -146,7 +146,7 @@ function Features() {
 
 function Stats() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <div className="grid grid-cols-2 gap-6 text-sm sm:grid-cols-3">
           <div className="border-y py-6">
@@ -174,7 +174,7 @@ function Stats() {
 
 function CtaTryNow() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <Card className="border-border/50 shadow-none p-8 sm:p-12">
           <div className="text-center">
@@ -204,7 +204,7 @@ function CtaTryNow() {
 
 function AhaMoments() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           Two moments after which you&apos;ll never go back
@@ -282,7 +282,7 @@ const values = [
 
 function ValuePropositions() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           What changes when your experience is data, not a document
@@ -319,7 +319,7 @@ const painPoints = [
 
 function ThatsMe() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
@@ -396,7 +396,7 @@ const coreJob3: Step[] = [
 
 function HowItWorks() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           How it works
@@ -439,7 +439,7 @@ function HowItWorks() {
 
 function Emotions() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <div className="grid gap-12 sm:grid-cols-2">
           <div>
@@ -510,7 +510,7 @@ const faqs = [
 
 function LoweringBarriers() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
@@ -572,7 +572,7 @@ const competitors = [
 
 function Competition() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           Why not [alternative]?
@@ -614,7 +614,7 @@ function Competition() {
 
 function FinalCta() {
   return (
-    <section className="py-24">
+    <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
