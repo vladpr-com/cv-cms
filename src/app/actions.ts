@@ -80,7 +80,7 @@ export async function getProfile() {
 export async function updateProfile(data: import('@/lib/types').UpdateProfile) {
   const dl = await getDataLayer();
   const result = await dl.updateProfile(data);
-  revalidatePath('/');
+  revalidatePath('/app');
   return result;
 }
 
@@ -124,7 +124,7 @@ export async function createJob(data: Omit<NewJob, 'id' | 'createdAt' | 'updated
   });
 
   revalidatePath('/jobs');
-  revalidatePath('/');
+  revalidatePath('/app');
 
   return result;
 }
@@ -160,7 +160,7 @@ export async function updateJob(id: string, data: Partial<Omit<NewJob, 'id' | 'c
     const result = await dl.updateJob(id, cleanedData);
 
     revalidatePath('/jobs');
-    revalidatePath('/');
+    revalidatePath('/app');
 
     return result;
   } catch (error: unknown) {
@@ -174,7 +174,7 @@ export async function deleteJob(id: string) {
   const result = await dl.deleteJob(id);
 
   revalidatePath('/jobs');
-  revalidatePath('/');
+  revalidatePath('/app');
 
   return result;
 }
@@ -246,7 +246,7 @@ export async function createHighlight(data: Omit<NewHighlight, 'id' | 'createdAt
   });
 
   revalidatePath('/jobs');
-  revalidatePath('/');
+  revalidatePath('/app');
   if (validated.jobId) {
     revalidatePath(`/jobs/${validated.jobId}`);
   }
@@ -262,7 +262,7 @@ export async function updateHighlight(id: string, data: Partial<Omit<NewHighligh
   const result = await dl.updateHighlight(id, data);
 
   revalidatePath('/jobs');
-  revalidatePath('/');
+  revalidatePath('/app');
   if (existing.jobId) {
     revalidatePath(`/jobs/${existing.jobId}`);
   }
@@ -278,7 +278,7 @@ export async function deleteHighlight(id: string) {
   const result = await dl.deleteHighlight(id);
 
   revalidatePath('/jobs');
-  revalidatePath('/');
+  revalidatePath('/app');
   if (existing.jobId) {
     revalidatePath(`/jobs/${existing.jobId}`);
   }
@@ -296,7 +296,7 @@ export async function toggleHighlightVisibility(id: string) {
   const result = await dl.toggleHighlightVisibility(id);
 
   revalidatePath('/jobs');
-  revalidatePath('/');
+  revalidatePath('/app');
   revalidatePath('/highlights');
 
   return result;
@@ -331,7 +331,7 @@ export async function bulkDeleteHighlights(ids: string[]) {
     .returning();
 
   revalidatePath('/jobs');
-  revalidatePath('/');
+  revalidatePath('/app');
   revalidatePath('/highlights');
   for (const jobId of jobIds) {
     if (jobId) revalidatePath(`/jobs/${jobId}`);
@@ -350,7 +350,7 @@ export async function quickUpdateHighlightTitle(id: string, title: string) {
   const result = await dl.updateHighlight(id, { title: title.trim() });
 
   revalidatePath('/jobs');
-  revalidatePath('/');
+  revalidatePath('/app');
   revalidatePath('/highlights');
   if (existing.jobId) {
     revalidatePath(`/jobs/${existing.jobId}`);
@@ -623,7 +623,7 @@ export async function importDatabase(backupData: unknown): Promise<ImportResult>
 
     result.success = result.errors.length === 0;
 
-    revalidatePath('/');
+    revalidatePath('/app');
     revalidatePath('/jobs');
     revalidatePath('/highlights');
 
@@ -643,7 +643,7 @@ export async function clearDatabase(): Promise<{ jobsDeleted: number; highlights
   const dl = await getDataLayer();
   const result = await dl.clearDatabase();
 
-  revalidatePath('/');
+  revalidatePath('/app');
   revalidatePath('/jobs');
   revalidatePath('/highlights');
   revalidatePath('/export');

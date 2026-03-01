@@ -200,7 +200,7 @@ export default function SettingsPage() {
         const dl = new ClientDataLayer();
         await dl.clearDatabase();
       }
-      router.push('/');
+      router.push('/app');
       router.refresh();
     } catch (err) {
       console.error('Failed to clear data:', err);
@@ -215,7 +215,7 @@ export default function SettingsPage() {
         {/* Header */}
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" asChild>
-            <Link href="/">
+            <Link href="/app">
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>

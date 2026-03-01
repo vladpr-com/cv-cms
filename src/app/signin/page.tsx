@@ -78,7 +78,7 @@ function SignInContent() {
             <Button
               variant="outline"
               className="w-full gap-2"
-              onClick={() => signIn('github', { callbackUrl: '/' })}
+              onClick={() => signIn('github', { callbackUrl: '/app' })}
             >
               <GitHubIcon className="h-5 w-5" />
               Continue with GitHub
@@ -86,7 +86,7 @@ function SignInContent() {
             <Button
               variant="outline"
               className="w-full gap-2"
-              onClick={() => signIn('google', { callbackUrl: '/' })}
+              onClick={() => signIn('google', { callbackUrl: '/app' })}
             >
               <GoogleIcon className="h-5 w-5" />
               Continue with Google

@@ -513,7 +513,7 @@ export function OptimizeClient() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Button variant="outline" size="icon" asChild>
-              <Link href="/"><ArrowLeft className="h-4 w-4" /></Link>
+              <Link href="/app"><ArrowLeft className="h-4 w-4" /></Link>
             </Button>
             <h1 className="text-2xl font-bold">Optimize Resume</h1>
           </div>
