@@ -66,9 +66,14 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="bg-background">
+    <section className="relative bg-background overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 h-[800px] w-[800px] rounded-full bg-primary/[0.04] blur-[120px]" />
+        <div className="absolute -top-1/4 left-1/4 h-[600px] w-[400px] rounded-full bg-primary/[0.03] blur-[100px]" />
+        <div className="absolute -top-1/4 right-1/4 h-[500px] w-[500px] rounded-full bg-foreground/[0.02] blur-[100px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_var(--border)_1px,_transparent_0)] bg-[size:40px_40px] opacity-30" />
+      </div>
       <div className="relative py-32 md:pt-44">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/[0.03] via-transparent to-transparent" />
         <div className="relative z-10 mx-auto w-full max-w-5xl px-6">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-balance font-serif text-4xl font-medium sm:text-5xl">
@@ -117,8 +122,9 @@ const features = [
 
 function Features() {
   return (
-    <section className="bg-background py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative bg-background py-24 overflow-hidden">
+      <div className="absolute -right-64 top-0 h-[500px] w-[500px] rounded-full bg-primary/[0.03] blur-[100px]" />
+      <div className="relative mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
             Apply to 10 jobs a week — each time with a resume that actually hits the mark
@@ -177,8 +183,11 @@ function Stats() {
 
 function CtaTryNow() {
   return (
-    <section className="bg-background py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative bg-background py-24 overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-primary/[0.04] blur-[120px]" />
+      </div>
+      <div className="relative mx-auto max-w-5xl px-6">
         <Card className="border-border/50 shadow-none p-8 sm:p-12">
           <div className="text-center">
             <Sparkles className="mx-auto mb-4 h-5 w-5 text-muted-foreground" />
@@ -207,8 +216,9 @@ function CtaTryNow() {
 
 function AhaMoments() {
   return (
-    <section className="bg-background py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative bg-background py-24 overflow-hidden">
+      <div className="absolute -left-64 top-1/3 h-[400px] w-[400px] rounded-full bg-foreground/[0.02] blur-[100px]" />
+      <div className="relative mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           Two moments after which you&apos;ll never go back
         </h2>
@@ -285,8 +295,9 @@ const values = [
 
 function ValuePropositions() {
   return (
-    <section className="bg-background py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative bg-background py-24 overflow-hidden">
+      <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-primary/[0.03] blur-[120px]" />
+      <div className="relative mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           What changes when your experience is data, not a document
         </h2>
@@ -442,8 +453,10 @@ function HowItWorks() {
 
 function Emotions() {
   return (
-    <section className="bg-background py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative bg-background py-24 overflow-hidden">
+      <div className="absolute -left-32 bottom-0 h-[400px] w-[400px] rounded-full bg-primary/[0.03] blur-[100px]" />
+      <div className="absolute right-0 top-1/4 h-[300px] w-[300px] rounded-full bg-foreground/[0.02] blur-[80px]" />
+      <div className="relative mx-auto max-w-5xl px-6">
         <div className="grid gap-12 sm:grid-cols-2">
           <div>
             <h2 className="text-balance font-serif text-3xl font-medium">
@@ -617,8 +630,12 @@ function Competition() {
 
 function FinalCta() {
   return (
-    <section className="bg-background py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative bg-background py-24 overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[600px] w-[800px] rounded-full bg-primary/[0.04] blur-[120px]" />
+        <div className="absolute bottom-1/4 left-1/3 h-[300px] w-[300px] rounded-full bg-foreground/[0.02] blur-[80px]" />
+      </div>
+      <div className="relative mx-auto max-w-5xl px-6">
         <div className="text-center">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
             Your next application can be different
