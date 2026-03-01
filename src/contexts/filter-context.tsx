@@ -79,7 +79,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
       }
 
       const queryString = params.toString();
-      const newUrl = queryString ? `/?${queryString}` : '/';
+      const newUrl = queryString ? `/app?${queryString}` : '/app';
 
       router.push(newUrl, { scroll: false });
     }, 300);

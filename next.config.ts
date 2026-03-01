@@ -23,22 +23,22 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/jobs',
-        destination: '/',
+        destination: '/app',
         permanent: true,
       },
       {
         source: '/jobs/:id',
-        destination: '/',
+        destination: '/app',
         permanent: true,
       },
       {
         source: '/highlights',
-        destination: '/',
+        destination: '/app',
         permanent: true,
       },
       {
         source: '/export',
-        destination: '/',
+        destination: '/app',
         permanent: true,
       },
       {
