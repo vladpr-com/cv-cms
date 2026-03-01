@@ -66,31 +66,23 @@ function Navbar() {
 
 function Hero() {
   return (
-    <section className="relative bg-background overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute -top-48 left-1/2 -translate-x-1/2 h-[700px] w-[700px] rounded-full bg-violet-500/20 blur-[120px]" />
-        <div className="absolute -top-24 -left-32 h-[500px] w-[500px] rounded-full bg-blue-500/15 blur-[100px]" />
-        <div className="absolute top-0 -right-32 h-[400px] w-[400px] rounded-full bg-rose-500/10 blur-[100px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_var(--border)_1px,_transparent_0)] bg-[size:40px_40px] opacity-[0.15]" />
-      </div>
-      <div className="relative py-32 md:pt-44">
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-6">
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-balance font-serif text-4xl font-medium sm:text-5xl">
-              A headless CMS for your career data.
-            </h1>
-            <p className="text-muted-foreground mt-4 text-balance text-lg">
-              Store your entire career as atomic blocks — achievements, projects,
-              metrics — and reassemble them into ATS-optimized resumes tailored to
-              each job posting. 5 minutes, not an hour.
-            </p>
-            <Button asChild className="mt-8 pr-1.5">
-              <Link href="/app">
-                <span className="text-nowrap">Try Free — No Sign-Up Required</span>
-                <ChevronRight className="opacity-50" />
-              </Link>
-            </Button>
-          </div>
+    <section className="py-32 md:pt-44">
+      <div className="mx-auto w-full max-w-5xl px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <h1 className="text-balance font-serif text-4xl font-medium sm:text-5xl">
+            A headless CMS for your career data.
+          </h1>
+          <p className="text-muted-foreground mt-4 text-balance text-lg">
+            Store your entire career as atomic blocks — achievements, projects,
+            metrics — and reassemble them into ATS-optimized resumes tailored to
+            each job posting. 5 minutes, not an hour.
+          </p>
+          <Button asChild className="mt-8 pr-1.5">
+            <Link href="/app">
+              <span className="text-nowrap">Try Free — No Sign-Up Required</span>
+              <ChevronRight className="opacity-50" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
@@ -122,10 +114,8 @@ const features = [
 
 function Features() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute -right-48 -top-24 h-[500px] w-[500px] rounded-full bg-blue-500/15 blur-[100px]" />
-      <div className="absolute -left-32 bottom-0 h-[400px] w-[400px] rounded-full bg-violet-500/10 blur-[100px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
             Apply to 10 jobs a week — each time with a resume that actually hits the mark
@@ -156,9 +146,8 @@ function Features() {
 
 function Stats() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute left-1/2 -translate-x-1/2 top-0 h-[300px] w-[600px] rounded-full bg-amber-500/10 blur-[100px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <div className="grid grid-cols-2 gap-6 text-sm sm:grid-cols-3">
           <div className="border-y py-6">
             <p className="text-muted-foreground text-xl">
@@ -185,12 +174,8 @@ function Stats() {
 
 function CtaTryNow() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-amber-500/15 blur-[120px]" />
-        <div className="absolute -top-32 -right-32 h-[400px] w-[400px] rounded-full bg-violet-500/10 blur-[100px]" />
-      </div>
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <Card className="border-border/50 shadow-none p-8 sm:p-12">
           <div className="text-center">
             <Sparkles className="mx-auto mb-4 h-5 w-5 text-muted-foreground" />
@@ -219,10 +204,8 @@ function CtaTryNow() {
 
 function AhaMoments() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute -left-32 top-0 h-[500px] w-[500px] rounded-full bg-rose-500/15 blur-[100px]" />
-      <div className="absolute -right-48 bottom-0 h-[400px] w-[400px] rounded-full bg-blue-500/10 blur-[100px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           Two moments after which you&apos;ll never go back
         </h2>
@@ -299,10 +282,8 @@ const values = [
 
 function ValuePropositions() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute -right-32 -top-24 h-[500px] w-[500px] rounded-full bg-violet-500/15 blur-[100px]" />
-      <div className="absolute -left-48 bottom-0 h-[400px] w-[400px] rounded-full bg-amber-500/10 blur-[100px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           What changes when your experience is data, not a document
         </h2>
@@ -338,9 +319,8 @@ const painPoints = [
 
 function ThatsMe() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute -right-48 top-1/4 h-[500px] w-[500px] rounded-full bg-rose-500/10 blur-[120px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
             Sound familiar?
@@ -416,10 +396,8 @@ const coreJob3: Step[] = [
 
 function HowItWorks() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute -left-48 top-0 h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[120px]" />
-      <div className="absolute -right-32 bottom-0 h-[400px] w-[400px] rounded-full bg-violet-500/10 blur-[100px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           How it works
         </h2>
@@ -461,10 +439,8 @@ function HowItWorks() {
 
 function Emotions() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute -left-32 bottom-0 h-[500px] w-[500px] rounded-full bg-amber-500/15 blur-[100px]" />
-      <div className="absolute -right-32 top-0 h-[400px] w-[400px] rounded-full bg-rose-500/12 blur-[100px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <div className="grid gap-12 sm:grid-cols-2">
           <div>
             <h2 className="text-balance font-serif text-3xl font-medium">
@@ -534,9 +510,8 @@ const faqs = [
 
 function LoweringBarriers() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute -left-48 top-1/3 h-[400px] w-[400px] rounded-full bg-violet-500/10 blur-[100px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
             &quot;But...&quot;
@@ -597,10 +572,8 @@ const competitors = [
 
 function Competition() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute -right-48 top-0 h-[500px] w-[500px] rounded-full bg-blue-500/12 blur-[120px]" />
-      <div className="absolute -left-32 bottom-0 h-[400px] w-[400px] rounded-full bg-rose-500/10 blur-[100px]" />
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
           Why not [alternative]?
         </h2>
@@ -641,13 +614,8 @@ function Competition() {
 
 function FinalCta() {
   return (
-    <section className="relative bg-background py-24 overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[600px] w-[800px] rounded-full bg-violet-500/20 blur-[120px]" />
-        <div className="absolute top-0 -left-32 h-[400px] w-[400px] rounded-full bg-blue-500/15 blur-[100px]" />
-        <div className="absolute top-1/4 -right-32 h-[400px] w-[400px] rounded-full bg-rose-500/10 blur-[100px]" />
-      </div>
-      <div className="relative mx-auto max-w-5xl px-6">
+    <section className="py-24">
+      <div className="mx-auto max-w-5xl px-6">
         <div className="text-center">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
             Your next application can be different
@@ -674,24 +642,59 @@ function FinalCta() {
   );
 }
 
+// ─── Background Blobs ─────────────────────────────────────────────────────────
+
+function BackgroundBlobs() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Hero area dot grid */}
+      <div className="absolute inset-x-0 top-0 h-[700px] bg-[radial-gradient(circle_at_1px_1px,_var(--border)_1px,_transparent_0)] bg-[size:40px_40px] opacity-[0.15]" />
+
+      {/* Hero blobs */}
+      <div className="absolute -top-[200px] left-1/2 -translate-x-1/2 h-[700px] w-[700px] rounded-full bg-violet-500/20 blur-[120px]" />
+      <div className="absolute -top-[100px] -left-32 h-[500px] w-[500px] rounded-full bg-blue-500/15 blur-[100px]" />
+      <div className="absolute top-0 -right-32 h-[400px] w-[400px] rounded-full bg-rose-500/10 blur-[100px]" />
+
+      {/* Mid-upper blobs */}
+      <div className="absolute top-[25%] right-[10%] h-[500px] w-[600px] rounded-full bg-amber-500/15 blur-[120px]" />
+      <div className="absolute top-[35%] -left-32 h-[500px] w-[500px] rounded-full bg-rose-500/15 blur-[100px]" />
+
+      {/* Mid blobs */}
+      <div className="absolute top-[50%] -right-32 h-[500px] w-[500px] rounded-full bg-blue-500/12 blur-[100px]" />
+      <div className="absolute top-[65%] -left-48 h-[500px] w-[500px] rounded-full bg-violet-500/15 blur-[120px]" />
+
+      {/* Lower blobs */}
+      <div className="absolute top-[75%] -right-32 h-[400px] w-[400px] rounded-full bg-amber-500/12 blur-[100px]" />
+
+      {/* Bottom blobs */}
+      <div className="absolute top-[85%] left-1/2 -translate-x-1/2 h-[800px] w-[600px] rounded-full bg-violet-500/20 blur-[120px]" />
+      <div className="absolute top-[90%] -left-32 h-[400px] w-[400px] rounded-full bg-blue-500/15 blur-[100px]" />
+      <div className="absolute top-[92%] -right-32 h-[400px] w-[400px] rounded-full bg-rose-500/10 blur-[100px]" />
+    </div>
+  );
+}
+
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function LandingPage() {
   return (
-    <>
-      <Navbar />
-      <Hero />
-      <Features />
-      <Stats />
-      <CtaTryNow />
-      <AhaMoments />
-      <ValuePropositions />
-      <ThatsMe />
-      <HowItWorks />
-      <Emotions />
-      <LoweringBarriers />
-      <Competition />
-      <FinalCta />
-    </>
+    <div className="relative">
+      <BackgroundBlobs />
+      <div className="relative">
+        <Navbar />
+        <Hero />
+        <Features />
+        <Stats />
+        <CtaTryNow />
+        <AhaMoments />
+        <ValuePropositions />
+        <ThatsMe />
+        <HowItWorks />
+        <Emotions />
+        <LoweringBarriers />
+        <Competition />
+        <FinalCta />
+      </div>
+    </div>
   );
 }
