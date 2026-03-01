@@ -96,19 +96,19 @@ const features = [
     icon: Upload,
     title: 'Load once, reuse forever',
     description:
-      'Import from LinkedIn, a PDF, or fill in manually. Every project, metric, and achievement becomes a separate atom with rich metadata.',
+      'Fill in manually or import from a JSON file. Use our AI prompt helper to convert any CV into structured data. Every project, metric, and achievement becomes a separate atom with rich metadata.',
   },
   {
     icon: Target,
     title: 'See how your experience maps',
     description:
-      'Paste a job link — the system breaks it down into must-haves and nice-to-haves, then shows which of your atoms match and where the gaps are.',
+      'Paste a job description — the system selects the most relevant atoms from your full career history and assembles them into a targeted resume.',
   },
   {
     icon: Zap,
     title: 'Generate in 5 minutes',
     description:
-      'Pick the relevant blocks, get bullet points in the language of the job posting, download a clean PDF.',
+      'Get bullet points rewritten in the language of the job posting, edit the result inline, and download a clean PDF.',
   },
 ];
 
@@ -161,7 +161,7 @@ function Stats() {
           </div>
           <div className="border-y py-6">
             <p className="text-muted-foreground text-xl">
-              <span className="text-foreground font-medium">30-80</span> career atoms from one import.
+              <span className="text-foreground font-medium">100%</span> of your career in one structured base.
             </p>
           </div>
         </div>
@@ -183,9 +183,9 @@ function CtaTryNow() {
               Try it now — no sign-up required
             </h2>
             <p className="text-muted-foreground mx-auto mt-4 max-w-md text-balance">
-              Paste your LinkedIn URL or upload a PDF. We&apos;ll break it into
-              atomic blocks in under 3 minutes. You&apos;ll see your career the way
-              you&apos;ve never seen it before.
+              Start entering your experience or import a JSON file. Use our AI
+              prompt to convert any CV into structured data. You&apos;ll see your
+              career the way you&apos;ve never seen it before.
             </p>
             <Button asChild className="mt-6 pr-1.5">
               <Link href="/app">
@@ -237,10 +237,9 @@ function AhaMoments() {
                   &quot;This resume — for this job — in 4 minutes?&quot;
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  Paste a job link, select the highlighted atoms, hit
-                  &quot;Generate.&quot; The PDF is ready. No copy-pasting between
-                  documents, no &quot;fine, I&apos;ll just send the generic
-                  version.&quot;
+                  Paste a job description, hit &quot;Generate.&quot; The PDF is
+                  ready. No copy-pasting between documents, no &quot;fine,
+                  I&apos;ll just send the generic version.&quot;
                 </p>
               </div>
             </div>
@@ -258,7 +257,7 @@ const values = [
     icon: Search,
     title: 'Matching instead of guessing',
     description:
-      'The system maps your atoms to job requirements and shows coverage percentage, missing keywords, and recommendations.',
+      'The system picks the most relevant atoms from your entire career for each specific job — no manual guesswork about what to include.',
   },
   {
     icon: Shield,
@@ -274,9 +273,9 @@ const values = [
   },
   {
     icon: Layers,
-    title: 'Versions don\'t get lost',
+    title: 'Your data, your control',
     description:
-      'Every version is linked to a job: company, role, date, status. When the recruiter calls, you find what you sent in 10 seconds.',
+      'Works without sign-up using local browser storage. Sign in to sync to the cloud. Your career data is always exportable as JSON — no vendor lock-in.',
   },
 ];
 
@@ -378,20 +377,20 @@ function StepRows({ steps }: { steps: Step[] }) {
 }
 
 const coreJob1: Step[] = [
-  { step: '1. Inventory', youDo: 'Upload LinkedIn, PDF, or fill in manually', youGet: 'A unified atom base: 30-80 achievements, projects, roles — with metrics, stack, domains' },
-  { step: '2. Job analysis', youDo: 'Paste a job link or description', youGet: 'Breakdown into must-have / nice-to-have, keywords, and the "language" of the posting' },
-  { step: '3. Match & assemble', youDo: 'Select atoms from highlighted recommendations', youGet: 'A tailored resume: right emphasis, terminology, block order' },
-  { step: '4. PDF & send', youDo: 'Hit "Download"', youGet: 'ATS-friendly PDF, clean typography, < 300 KB. Version saved automatically' },
+  { step: '1. Inventory', youDo: 'Fill in manually or import a JSON file', youGet: 'A structured atom base: achievements, projects, roles — each with metrics, tech stack, and domains' },
+  { step: '2. Job analysis', youDo: 'Paste a job description', youGet: 'AI selects relevant atoms and rewrites them in the language of the posting' },
+  { step: '3. Match & assemble', youDo: 'Review and edit the generated resume inline', youGet: 'A tailored resume: right emphasis, terminology, block order — ready to download' },
+  { step: '4. PDF & send', youDo: 'Hit "Download"', youGet: 'Clean PDF via browser print. Ready to send' },
 ];
 
 const coreJob2: Step[] = [
-  { step: 'Retrospective', youDo: 'Mark the application status (rejected / ghosted)', youGet: 'Comparison of the sent version vs. job requirements: missed keywords, achievements buried on page two' },
-  { step: 'Iteration', youDo: 'Apply recommendations to the next application', youGet: 'Each next application is more precise — the system learns from your data' },
+  { step: 'Edit', youDo: 'Tweak bullet points, remove irrelevant entries', youGet: 'A polished resume that sounds like you, not like a template' },
+  { step: 'Iterate', youDo: 'Generate again with a different job description', youGet: 'Each resume is assembled fresh from your full atom base' },
 ];
 
 const coreJob3: Step[] = [
-  { step: 'Reuse', youDo: 'Clone a successful version for a similar role', youGet: '80% of the work is already done — just adjust the emphasis' },
-  { step: 'Parallel versions', youDo: 'Manage all applications in one place', youGet: 'Dashboard: job, CV version, status, date. No file chaos' },
+  { step: 'Cloud sync', youDo: 'Sign in with GitHub or Google', youGet: 'Local data auto-migrates to your personal cloud database — access from any device' },
+  { step: 'Own your pipeline', youDo: 'Connect your own n8n webhook for AI generation', youGet: 'Full control: your API keys, your model choice, your data never stored on third-party servers' },
 ];
 
 function HowItWorks() {
@@ -417,7 +416,7 @@ function HowItWorks() {
           <div>
             <h3 className="font-medium mb-4 flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
-              &quot;I need to understand why I got rejected and fix it&quot;
+              &quot;I need to polish the result before sending&quot;
             </h3>
             <StepRows steps={coreJob2} />
           </div>
@@ -425,7 +424,7 @@ function HowItWorks() {
           <div>
             <h3 className="font-medium mb-4 flex items-center gap-2">
               <Repeat className="h-4 w-4" />
-              &quot;I can&apos;t spend hours rewriting for 5-10 applications a week&quot;
+              &quot;I want my data safe and under my control&quot;
             </h3>
             <StepRows steps={coreJob3} />
           </div>
@@ -449,7 +448,7 @@ function Emotions() {
             <div className="mt-8 space-y-6">
               {[
                 { icon: Heart, label: 'Confidence', text: 'You know every application goes out with a resume that speaks the language of the job.' },
-                { icon: Eye, label: 'Control', text: 'You see your entire pipeline: how many applications, which versions, where you got a response. Job search becomes a managed process, not chaos.' },
+                { icon: Eye, label: 'Control', text: 'You see your entire career structured and searchable. Every achievement tagged with skills, domains, and metrics. Job search becomes a managed process, not chaos.' },
                 { icon: Coffee, label: 'Calm', text: "You're not burning weekends on manual document surgery. There's time to prep for interviews, rest, recharge." },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3">
@@ -494,7 +493,7 @@ const faqs = [
   {
     question: '"I don\'t have time to fill in yet another tool"',
     answer:
-      'Upload your LinkedIn profile or existing PDF — we decompose it into atoms automatically. Initial inventory takes 10-15 minutes. After that, you just pick blocks.',
+      'Use our AI prompt helper to convert any CV or career description into a structured JSON import. Or fill in data manually — the forms are quick. Initial inventory takes 15-30 minutes. After that, you just hit Generate.',
   },
   {
     question: '"AI-generated text is obvious and generic"',
@@ -504,7 +503,7 @@ const faqs = [
   {
     question: '"I need both English and Russian versions"',
     answer:
-      'Atoms are stored with multilingual metadata. Generate a version in Russian for hh.ru and in English for LinkedIn Jobs — from the same base.',
+      'Enter your atoms in any language. Generate resumes in the language of the job posting — the AI adapts terminology automatically. Works great for bilingual job searches.',
   },
 ];
 
@@ -621,9 +620,9 @@ function FinalCta() {
             Your next application can be different
           </h2>
           <p className="text-muted-foreground mx-auto mt-4 max-w-md text-balance">
-            No account. No credit card. No friction. Paste your LinkedIn or upload
-            a PDF, see your atoms, generate your first tailored resume. 5 minutes
-            to your first PDF.
+            No account. No credit card. No friction. Start entering your
+            experience, import your data, and generate your first tailored
+            resume. 5 minutes to your first PDF.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button asChild className="pr-1.5">
